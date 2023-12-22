@@ -1,0 +1,62 @@
+{
+  "name": "ui-api-playwright",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:sdetannguyen/ui-api-playwright.git",
+  "author": "<sdet.annguyen@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "checkly:deploy": "npx checkly deploy",
+    "checkly:test": "npx checkly test",
+    "playwright": "ts-node ./scripts/index.ts playwright",
+    "playwright:install": "npx playwright install",
+    "prepare": "husky install",
+    "lint": "TIMING=1 eslint src scripts",
+    "genGmailAccessToken": "ts-node ./src/scripts/genGmailAccessToken.ts"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix --cache",
+      "tsc-files --noEmit"
+    ],
+    "*.md": "eslint --fix --cache"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.1",
+    "@faker-js/faker": "8.0.2",
+    "@google-cloud/local-auth": "3.0.0",
+    "@nx/js": "16.7.4",
+    "@tsconfig/recommended": "^1.0.2",
+    "@types/jsdom": "^21.1.1",
+    "@types/totp-generator": "^0.0.5",
+    "@types/yargs": "^17.0.24",
+    "@typescript-eslint/eslint-plugin": "^5.57.0",
+    "@typescript-eslint/parser": "^5.57.0",
+    "@types/node": "*",
+    "axios": "^1.4.0",
+    "checkly": "^4.2.0",
+    "date-fns": "^2.30.0",
+    "date-fns-tz": "^2.0.0",
+    "eslint": "^8.37.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-markdown": "^3.0.0",
+    "eslint-plugin-playwright": "^0.12.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "gmail-api-parse-message-ts": "^2.2.32",
+    "googleapis": "^126.0.0",
+    "husky": "^8.0.3",
+    "hygen": "^6.2.11",
+    "jsdom": "^22.1.0",
+    "lint-staged": "^13.2.0",
+    "nx": "16.7.4",
+    "otpauth": "^9.1.4",
+    "playwright-json-summary-reporter": "^1.0.0",
+    "prettier": "^2.8.7",
+    "ts-node": "10.9.1",
+    "tsc-files": "^1.1.3",
+    "twilio": "^4.15.0",
+    "typescript": "4.9.5",
+    "yargs": "^17.7.1"
+  }
+}
