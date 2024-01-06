@@ -11,7 +11,8 @@
     "playwright": "ts-node ./scripts/index.ts playwright",
     "playwright:install": "npx playwright install",
     "prepare": "husky install",
-    "lint": "TIMING=1 eslint src scripts",
+    "lint": "eslint src",
+    "precommit": "npx run lint && npx playwright test",
     "genGmailAccessToken": "ts-node ./src/scripts/genGmailAccessToken.ts"
   },
   "lint-staged": {
@@ -20,6 +21,12 @@
       "tsc-files --noEmit"
     ],
     "*.md": "eslint --fix --cache"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npx run precommit"
+    }
+ 
   },
   "devDependencies": {
     "@faker-js/faker": "8.0.2",
@@ -37,7 +44,7 @@
     "checkly": "^4.2.0",
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
-    "eslint": "^8.0.1",
+    "eslint": "^8.56.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-config-standard-with-typescript": "^43.0.0",
     "eslint-plugin-import": "^2.25.2",
