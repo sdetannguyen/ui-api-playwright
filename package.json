@@ -12,7 +12,7 @@
     "playwright:install": "npx playwright install",
     "prepare": "husky install",
     "lint": "eslint src",
-    "precommit": "npx run lint && npx playwright test",
+    "precommit": "npm run lint && npm playwright test",
     "genGmailAccessToken": "ts-node ./src/scripts/genGmailAccessToken.ts"
   },
   "lint-staged": {
@@ -24,7 +24,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npx run precommit"
+      "pre-commit": "npm run precommit"
     }
  
   },
