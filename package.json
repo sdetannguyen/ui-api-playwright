@@ -11,8 +11,8 @@
     "playwright": "ts-node ./scripts/index.ts playwright",
     "playwright:install": "npx playwright install",
     "prepare": "husky install",
-    "lint": "eslint src",
-    "precommit": "npm run lint && npm playwright test",
+    "eslint": "eslint --ext .ts .",
+    "precommit": "npm run eslint && npm playwright test",
     "genGmailAccessToken": "ts-node ./src/scripts/genGmailAccessToken.ts"
   },
   "lint-staged": {

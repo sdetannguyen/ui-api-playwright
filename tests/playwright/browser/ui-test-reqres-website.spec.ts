@@ -7,6 +7,7 @@ import { test, expect } from '@playwright/test'
  * 3. Get the ui response ouput
  */
 test('Verify single user session', async ({ page }) => {
+  var z = 1;
   await page.goto('https://reqres.in/')
 
   await expect(page).toHaveTitle(/Reqres - A hosted REST-API ready to respond to your AJAX/)
