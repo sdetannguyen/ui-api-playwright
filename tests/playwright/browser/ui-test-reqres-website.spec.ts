@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { ReqresHomePage } from '../../../pages/ReqresHomePage'
 
 /**
  * Steps
@@ -7,13 +8,16 @@ import { test, expect } from '@playwright/test'
  * 3. Get the ui response ouput
  */
 test('Verify single user session', async ({ page }) => {
-  await page.goto('https://reqres.in/')
+
+  const homePage = new ReqresHomePage(page)
+
+  await homePage.goto()
 
   await expect(page).toHaveTitle(/Reqres - A hosted REST-API ready to respond to your AJAX/)
 
-  await page.getByRole("link",  { name: 'Single user', exact: true }).click()
+  await homePage.singleUserBtn.click()
 
-  const output = await page.getByText('{ "data": { "id": 2, "email').textContent()
+  const output = await homePage.getSingleUserResponseContent()
 
   expect(output?.toString()).toContain('janet')
 })
