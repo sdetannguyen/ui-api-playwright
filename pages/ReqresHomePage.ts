@@ -1,14 +1,14 @@
 import {type Locator, type Page } from '@playwright/test'
+import { BasePage } from './BasePage'
 
-export class ReqresHomePage {
+export class ReqresHomePage extends BasePage {
     
-    readonly page: Page
     readonly singleUserBtn: Locator
     readonly pomLink: Locator
     readonly singleUserRespone: Locator
 
     constructor(page: Page) {
-        this.page = page
+        super(page)
         this.singleUserBtn = page.getByRole("link",  { name: 'Single user', exact: true })
         this.singleUserRespone = page.getByText('{ "data": { "id": 2, "email')  
     }
