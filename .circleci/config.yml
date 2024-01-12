@@ -1,0 +1,27 @@
+# Couldn't automatically generate a config from your source code.
+# This is a generic template to serve as a base for your custom config
+# See: https://circleci.com/docs/configuration-reference
+# Stacks detected: cicd:github-actions:.github/workflows,deps:node:.,package_manager:yarn:
+version: 2.1
+orbs:
+  node: circleci/node@5.0.2
+jobs:
+  build_and_test: # this can be any name you choose
+    executor: node/default # use the default executor defined within the orb
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          command: npx playwright install --with-deps
+          name: Install Playwright Browsers
+      - run:
+          command: npx playwright test
+          name: Run tests
+  build:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - store_artifacts:
+          path: playwright-report/
