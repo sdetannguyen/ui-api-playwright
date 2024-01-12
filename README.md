@@ -3,8 +3,6 @@ Skeleton for ui and api automated tests using Playwright.
 
 Target web app: https://reqres.in/
 
-
-
 ## How it works
 
 The skeleton/framework built on top of [Playwright](https://playwright.dev/) for both UI & API automated tests. The framework includes fundamental setups such as POM pattern, code style check, pre-commit checks, CI/CD integration, and others.
