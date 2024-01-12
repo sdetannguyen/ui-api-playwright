@@ -15,7 +15,7 @@ jobs:
       - store_test_results:
           path: results.xml
       - store_artifacts:
-          path: /playwright-report
+          path: playwright-report
 
 # Invoke jobs via workflows
 workflows:
