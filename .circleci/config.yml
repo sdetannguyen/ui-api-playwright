@@ -4,7 +4,6 @@ jobs:
   run-test:
     docker:
       - image: mcr.microsoft.com/playwright:v1.40.0-focal
-    working_directory: /tmp
     steps:
       - checkout
       - run: npm i -D @playwright/test
@@ -15,19 +14,10 @@ jobs:
           command: PLAYWRIGHT_JUNIT_OUTPUT_NAME=results.xml npx playwright test --reporter=junit,html --project=chromium
       - store_test_results:
           path: results.xml
-      - run:
-          name: Echo upload artifacts
-          command: |
-            echo "my artifact file" > /tmp/playwrigh-report/index.html;
-            mkdir /tmp/artifacts;
-            echo "my artifact files in a dir" > /tmp/playwrigh-report;  
-
       - store_artifacts:
-          path: /tmp/playwrigh-report/index.html
-          destination: artifact-file
+          path: /playwright-report/index.html
+          destination: html
 
-      - store_artifacts:
-          path: /tmp/playwrigh-report
 # Invoke jobs via workflows
 workflows:
   run-test-workflow:
