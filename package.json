@@ -6,8 +6,6 @@
   "author": "<sdet.annguyen@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "checkly:deploy": "npx checkly deploy",
-    "checkly:test": "npx checkly test",
     "playwright": "ts-node ./scripts/index.ts playwright",
     "playwright:install": "npx playwright install",
     "prepare": "husky install",
