@@ -11,7 +11,7 @@ jobs:
       - run: npx playwright install --with-deps chrome
       - run:
           name: Run test
-          command: PLAYWRIGHT_JUNIT_OUTPUT_NAME=results.xml npx playwright test --reporter=junit --project=chromium
+          command: PLAYWRIGHT_JUNIT_OUTPUT_NAME=results.xml npx playwright test --reporter=junit,html --project=chromium
       - store_test_results:
           path: results.xml
       - store_artifacts:
