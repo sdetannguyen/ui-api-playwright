@@ -7,11 +7,11 @@ jobs:
     steps:
       - checkout
       - run: npm i -D @playwright/test
-      - run: npx playwright install
-      - run: npx playwright install chrome
+      # - run: npx playwright install
+      - run: npx playwright install --with-deps chrome
       - run:
           name: Run test
-          command: npx playwright test --reporter=junit --project=chromium
+          command: PLAYWRIGHT_JUNIT_OUTPUT_NAME=results.xml npx playwright test --reporter=junit --project=chromium
       - store_test_results:
           path: results.xml
 # Invoke jobs via workflows
