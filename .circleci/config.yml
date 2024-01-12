@@ -14,6 +14,8 @@ jobs:
           command: PLAYWRIGHT_JUNIT_OUTPUT_NAME=results.xml npx playwright test --reporter=junit --project=chromium
       - store_test_results:
           path: results.xml
+      - store_artifacts:
+          path: /playwright-report
 # Invoke jobs via workflows
 workflows:
   run-test-workflow:
