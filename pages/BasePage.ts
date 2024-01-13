@@ -1,6 +1,6 @@
 import { type Page } from '@playwright/test'
 
-export class BasePage {
+export abstract class BasePage {
 
     readonly page: Page
 
@@ -9,6 +9,8 @@ export class BasePage {
 
         //Common locators
     }
+
+    abstract goto(): void
 
     // Common actions
     async waitForFullPageIsLoaded() {
