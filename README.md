@@ -1,7 +1,9 @@
 # ui-api-playwright
 Skeleton for ui and api automated tests using Playwright.
 
-Target web app: https://reqres.in/
+Target web apps: 
+- https://reqres.in/
+- https://practicetestautomation.com/
 
 ## How it works
 
