@@ -73,5 +73,5 @@ New Branch > Circle CI Auto-Started
 New PR > Circle CI > Github Action (GHA) -> All Passed -> Merge Permission Granted
 ```
 ```
-New PR > Circle CI > Github Action (GHA) -> Failure -> Merge Permission Denied
+New PR > Circle CI > Github Action (GHA) -> Failed -> Merge Permission Denied
 ```
