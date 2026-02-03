@@ -1,0 +1,52 @@
+
+Running 2 tests using 1 worker
+
+[1A[2K[1/2] [setup] › auth.setup.ts:9:6 › authenticate
+[1A[2K[2/2] [chromium] › playwright\browser\ui-test-reqres-website.spec.ts:10:5 › Verify single user session
+[1A[2K  1) [chromium] › playwright\browser\ui-test-reqres-website.spec.ts:10:5 › Verify single user session 
+
+    Error: [31mTimed out 5000ms waiting for [39m[2mexpect([22m[31mlocator[39m[2m).[22mtoHaveTitle[2m([22m[32mexpected[39m[2m)[22m
+
+    Locator: locator(':root')
+    Expected pattern: [32m/Reqres - A hosted REST-API ready to respond to your AJAX/[39m
+    Received string:  [31m"Frontend-first backend you call with fetch() | ReqRes"[39m
+    Call log:
+      [2m- expect.toHaveTitle with timeout 5000ms[22m
+    [2m  - waiting for locator(':root')[22m
+    [2m  -   locator resolved to <html lang="en">…</html>[22m
+    [2m  -   unexpected value "Frontend-first backend you call with fetch() | ReqRes"[22m
+    [2m  -   locator resolved to <html lang="en">…</html>[22m
+    [2m  -   unexpected value "Frontend-first backend you call with fetch() | ReqRes"[22m
+    [2m  -   locator resolved to <html lang="en">…</html>[22m
+    [2m  -   unexpected value "Frontend-first backend you call with fetch() | ReqRes"[22m
+    [2m  -   locator resolved to <html lang="en">…</html>[22m
+    [2m  -   unexpected value "Frontend-first backend you call with fetch() | ReqRes"[22m
+    [2m  -   locator resolved to <html lang="en">…</html>[22m
+    [2m  -   unexpected value "Frontend-first backend you call with fetch() | ReqRes"[22m
+    [2m  -   locator resolved to <html lang="en">…</html>[22m
+    [2m  -   unexpected value "Frontend-first backend you call with fetch() | ReqRes"[22m
+    [2m  -   locator resolved to <html lang="en">…</html>[22m
+    [2m  -   unexpected value "Frontend-first backend you call with fetch() | ReqRes"[22m
+    [2m  -   locator resolved to <html lang="en">…</html>[22m
+    [2m  -   unexpected value "Frontend-first backend you call with fetch() | ReqRes"[22m
+    [2m  -   locator resolved to <html lang="en">…</html>[22m
+    [2m  -   unexpected value "Frontend-first backend you call with fetch() | ReqRes"[22m
+
+
+      14 |   await homePage.goto()
+      15 |
+    > 16 |   await expect(page).toHaveTitle(/Reqres - A hosted REST-API ready to respond to your AJAX/)
+         |                      ^
+      17 |
+      18 |   await homePage.singleUserBtn.click()
+      19 |
+
+        at D:\automation\ui-api-playwright\tests\playwright\browser\ui-test-reqres-website.spec.ts:16:22
+
+
+[1A[2K  1 failed
+    [chromium] › playwright\browser\ui-test-reqres-website.spec.ts:10:5 › Verify single user session 
+  1 passed (12.5s)
+
+  Serving HTML report at http://localhost:9323. Press Ctrl+C to quit.
+Terminate batch job (Y/N)? Terminate batch job (Y/N)? Terminate batch job (Y/N)? 
