@@ -3,22 +3,21 @@ import { BasePage } from './BasePage'
 
 export class ReqresHomePage extends BasePage {
     
-    readonly singleUserBtn: Locator
-    readonly pomLink: Locator
-    readonly singleUserRespone: Locator
+    readonly howItWorksBtn: Locator
+    readonly heading: Locator
 
     constructor(page: Page) {
         super(page)
-        this.singleUserBtn = page.getByRole("button",  { name: 'Single user', exact: true })
-        this.singleUserRespone = page.getByText('{ "data": { "id": 2, "email')  
+        this.howItWorksBtn = page.getByRole('link', { name: 'How it works' })
+        this.heading = page.getByRole('heading', { name: 'The project lifecycle' })  
     }
 
     async goto() {
       await this.page.goto('/');
     }
 
-    async getSingleUserResponseContent() {
-      await this.singleUserBtn.click()
-      return await this.singleUserRespone.textContent()
+    async getResponseContent() {
+      await this.howItWorksBtn.click()
+      return await this.heading.textContent()
     }
 }

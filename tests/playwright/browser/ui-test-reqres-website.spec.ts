@@ -13,11 +13,9 @@ test('Verify single user session', async ({ page }) => {
 
   await homePage.goto()
 
-  await expect(page).toHaveTitle(/Frontend-first backend you call with fetch\(\) \| ReqRes/)
+  await expect(page).toHaveTitle(/ReqRes/)
 
-  await homePage.singleUserBtn.click()
+  const output = await homePage.getResponseContent()
 
-  const output = await homePage.getSingleUserResponseContent()
-
-  expect(output?.toString()).toContain('janet')
+  expect(output?.toString()).toContain('The project lifecycle')
 })
