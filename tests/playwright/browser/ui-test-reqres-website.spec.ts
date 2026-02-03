@@ -13,7 +13,7 @@ test('Verify single user session', async ({ page }) => {
 
   await homePage.goto()
 
-  await expect(page).toHaveTitle(/Reqres - A hosted REST-API ready to respond to your AJAX/)
+  await expect(page).toHaveTitle(/Frontend-first backend you call with fetch\(\) \| ReqRes/)
 
   await homePage.singleUserBtn.click()
 

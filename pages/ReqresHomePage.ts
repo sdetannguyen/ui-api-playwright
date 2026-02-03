@@ -9,7 +9,7 @@ export class ReqresHomePage extends BasePage {
 
     constructor(page: Page) {
         super(page)
-        this.singleUserBtn = page.getByRole("link",  { name: 'Single user', exact: true })
+        this.singleUserBtn = page.getByRole("button",  { name: 'Single user', exact: true })
         this.singleUserRespone = page.getByText('{ "data": { "id": 2, "email')  
     }
 
