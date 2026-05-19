@@ -27,7 +27,7 @@
     "@faker-js/faker": "8.0.2",
     "@google-cloud/local-auth": "3.0.0",
     "@nx/js": "16.7.4",
-    "@playwright/test": "^1.40.1",
+    "@playwright/test": "^1.60.0",
     "@tsconfig/recommended": "^1.0.2",
     "@types/jsdom": "^21.1.1",
     "@types/node": "*",
