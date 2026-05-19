@@ -7,7 +7,7 @@ export class ReqresHomePage extends BasePage {
 
   constructor(page: Page) {
     super(page)
-    this.heroHeading = page.getByRole('heading', { name: 'Your backend, live in your browser.' })
+    this.heroHeading = page.getByRole('heading', { name: /A real backend/i })
   }
 
   async goto() {
