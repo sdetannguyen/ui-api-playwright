@@ -14,6 +14,7 @@ export default defineConfig({
       requester: 'playwright',
     },
     trace: 'on-first-retry',
+    video: 'on-first-retry',
   },
   projects: [
     { name: 'setup', testMatch: /.*\.setup\.ts/ },
