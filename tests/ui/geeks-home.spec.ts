@@ -1,7 +1,7 @@
 import { test, expect } from '../../lib/fixtures'
 
-test('geeksforgeeks.org homepage displays the logo', async ({ geeksHome }) => {
-  await geeksHome.goto()
+test('playwright.dev homepage displays the logo', async ({ playwrightHome }) => {
+  await playwrightHome.goto()
 
-  await expect(geeksHome.logo).toBeVisible()
+  await expect(playwrightHome.logo).toBeVisible()
 })
