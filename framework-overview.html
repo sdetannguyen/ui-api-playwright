@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ui-api-playwright — Framework Overview</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #22263a;
+      --border: #2e3347;
+      --accent: #34d399;
+      --accent2: #6ee7b7;
+      --orange: #fb923c;
+      --green: #34d399;
+      --red: #f87171;
+      --yellow: #fbbf24;
+      --blue: #60a5fa;
+      --text: #e2e8f0;
+      --muted: #8892a4;
+      --code-bg: #131720;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* ── Language toggle ── */
+    .lang-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 32px;
+    }
+    .lang-bar span { color: var(--muted); font-size: 13px; margin-right: 4px; }
+    .lang-btn {
+      padding: 5px 16px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .lang-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #000;
+      font-weight: 600;
+    }
+
+    /* ── Layout ── */
+    .container { max-width: 960px; margin: 0 auto; padding: 48px 32px 96px; }
+    .version { display: none; }
+    .version.active { display: block; }
+
+    /* ── Hero ── */
+    .hero { margin-bottom: 56px; }
+    .hero h1 { font-size: 32px; font-weight: 700; letter-spacing: -.5px; margin-bottom: 8px; }
+    .hero h1 span { color: var(--accent); }
+    .hero p { color: var(--muted); font-size: 16px; max-width: 600px; }
+    .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .badge {
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: var(--surface);
+    }
+
+    /* ── Sections ── */
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 48px 0 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+    h3 { font-size: 15px; font-weight: 600; color: var(--accent2); margin: 24px 0 10px; }
+    p { color: var(--muted); margin-bottom: 12px; }
+
+    /* ── Tree ── */
+    .tree {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 13px;
+      line-height: 1.9;
+      overflow-x: auto;
+    }
+    .tree .dir  { color: var(--accent); font-weight: 600; }
+    .tree .file { color: var(--text); }
+    .tree .comment { color: var(--muted); }
+
+    /* ── Layer cards ── */
+    .layers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 8px; }
+    @media (max-width: 680px) { .layers { grid-template-columns: 1fr; } }
+    .layer-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .layer-card .num {
+      font-size: 11px; font-weight: 700; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;
+    }
+    .layer-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+    .layer-card ul { padding-left: 16px; }
+    .layer-card li { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+
+    /* ── Features ── */
+    .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    @media (max-width: 600px) { .features { grid-template-columns: 1fr; } }
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+    }
+    .feature-card .icon { font-size: 22px; margin-bottom: 8px; }
+    .feature-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+    .feature-card p { font-size: 13px; margin: 0; }
+
+    /* ── Verdict ── */
+    .verdict { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 600px) { .verdict { grid-template-columns: 1fr; } }
+    .verdict-card { background: var(--surface); border-radius: 10px; padding: 20px; }
+    .verdict-card.good { border: 1px solid #1f4a37; }
+    .verdict-card.bad  { border: 1px solid #4a1f1f; }
+    .verdict-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 12px; }
+    .verdict-card.good h4 { color: var(--green); }
+    .verdict-card.bad  h4 { color: var(--red); }
+    .verdict-card li { font-size: 13px; color: var(--muted); margin-bottom: 8px; padding-left: 4px; list-style: none; }
+    .verdict-card li::before { margin-right: 8px; }
+    .verdict-card.good li::before { content: "✓"; color: var(--green); }
+    .verdict-card.bad  li::before { content: "✗"; color: var(--red); }
+
+    /* ── Missing ── */
+    .missing-list { list-style: none; }
+    .missing-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 12px 16px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 8px;
+      margin-bottom: 8px; font-size: 13px; color: var(--muted);
+    }
+    .missing-list li .tag {
+      flex-shrink: 0; font-size: 11px; font-weight: 700;
+      padding: 2px 8px; border-radius: 4px;
+      text-transform: uppercase; letter-spacing: .5px;
+    }
+    .tag.high   { background: #4a1f1f; color: var(--red); }
+    .tag.medium { background: #3a3010; color: var(--yellow); }
+    .tag.low    { background: #0a2a1a; color: var(--green); }
+
+    /* ── Table ── */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th {
+      text-align: left; padding: 10px 14px; background: var(--surface2);
+      color: var(--muted); font-weight: 600; font-size: 12px;
+      text-transform: uppercase; letter-spacing: .5px;
+    }
+    th:first-child { border-radius: 8px 0 0 0; }
+    th:last-child  { border-radius: 0 8px 0 0; }
+    td {
+      padding: 11px 14px; border-bottom: 1px solid var(--border);
+      color: var(--muted); vertical-align: top;
+    }
+    td:first-child { color: var(--text); font-weight: 500; }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: var(--surface); }
+
+    /* ── vs Selenium ── */
+    .vs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 600px) { .vs-grid { grid-template-columns: 1fr; } }
+    .vs-card { border-radius: 10px; padding: 20px; border: 1px solid var(--border); }
+    .vs-card.playwright { background: var(--surface2); }
+    .vs-card.selenium   { background: var(--surface); }
+    .vs-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 14px; }
+    .vs-card.playwright h4 { color: var(--green); }
+    .vs-card.selenium   h4 { color: var(--orange); }
+    .vs-card li { font-size: 13px; color: var(--muted); list-style: none; margin-bottom: 8px; }
+    .vs-card li::before { margin-right: 8px; }
+    .vs-card.playwright li::before { content: "→"; color: var(--green); }
+    .vs-card.selenium   li::before { content: "→"; color: var(--orange); }
+    .verdict-box {
+      margin-top: 20px; padding: 16px 20px; background: var(--surface2);
+      border: 1px solid var(--border); border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0; font-size: 13px; color: var(--muted);
+    }
+    .verdict-box strong { color: var(--text); }
+
+    /* ── Architecture diff ── */
+    .diff-label { display: flex; gap: 8px; margin-bottom: 16px; }
+    .diff-label span {
+      font-size: 12px; font-weight: 700; padding: 3px 12px;
+      border-radius: 4px; text-transform: uppercase; letter-spacing: .5px;
+    }
+    .diff-label .lbl-pw  { background: #0a2a1a; color: var(--green); }
+    .diff-label .lbl-sel { background: #2a1800; color: var(--orange); }
+    .diff-row {
+      display: grid; grid-template-columns: 140px 1fr 1fr;
+      gap: 0; border: 1px solid var(--border); border-radius: 10px;
+      overflow: hidden; margin-bottom: 12px; font-size: 12.5px;
+    }
+    @media (max-width: 700px) { .diff-row { grid-template-columns: 1fr; } }
+    .diff-concept {
+      background: var(--surface2); padding: 14px 16px;
+      display: flex; align-items: center;
+      font-size: 12px; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .5px;
+      border-right: 1px solid var(--border);
+    }
+    .diff-pw, .diff-sel {
+      padding: 12px 16px; font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 12px; line-height: 1.7; white-space: pre; overflow-x: auto;
+    }
+    .diff-pw  { background: #001a0d; color: #34d399; border-right: 1px solid var(--border); }
+    .diff-sel { background: #140d00; color: #fb923c; }
+    .diff-pw  .cm, .diff-sel .cm { color: #3a4a3a; }
+    .diff-pw  .kw { color: #6ee7b7; }
+    .diff-sel .kw { color: #fbbf24; }
+    .diff-pw  .ty { color: #a7f3d0; }
+    .diff-sel .ty { color: #fdba74; }
+    .diff-struct { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    @media (max-width: 700px) { .diff-struct { grid-template-columns: 1fr; } }
+    .diff-struct .tree { margin: 0; }
+
+    /* ── CI flow ── */
+    .ci-flow {
+      display: flex; align-items: center; flex-wrap: wrap; gap: 0;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px 20px; margin-bottom: 12px;
+    }
+    .ci-step {
+      font-size: 12px; font-weight: 600; color: var(--text);
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 6px; padding: 6px 12px; white-space: nowrap;
+    }
+    .ci-arrow { color: var(--muted); padding: 0 8px; font-size: 14px; }
+
+    code {
+      font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px;
+      background: var(--code-bg); padding: 2px 6px;
+      border-radius: 4px; color: var(--accent2);
+    }
+  </style>
+</head>
+<body>
+
+<div class="lang-bar">
+  <span>Language:</span>
+  <button class="lang-btn active" onclick="setLang('en')">English</button>
+  <button class="lang-btn" onclick="setLang('vi')">Tiếng Việt</button>
+</div>
+
+<!-- ══════════════════════════ ENGLISH ══════════════════════════ -->
+<div id="en" class="version active">
+<div class="container">
+
+  <div class="hero">
+    <h1>ui-api-<span>playwright</span></h1>
+    <p>A TypeScript-based test automation framework for UI and API tests. Three-layer architecture built on Playwright's native primitives — fixtures, request context, and auto-wait.</p>
+    <div class="badge-row">
+      <span class="badge">TypeScript 5.3</span>
+      <span class="badge">Playwright 1.60</span>
+      <span class="badge">Node 18</span>
+      <span class="badge">ESLint 8</span>
+      <span class="badge">Husky 8</span>
+      <span class="badge">CircleCI</span>
+      <span class="badge">GitHub Actions</span>
+    </div>
+  </div>
+
+  <!-- STRUCTURE -->
+  <h2>Structure</h2>
+  <p>Three strict layers. Infrastructure owns config and credentials. <code>lib/</code> owns page objects, API clients, and the fixture wiring. Tests are thin specs that import from <code>lib/fixtures</code> only.</p>
+
+  <div class="layers">
+    <div class="layer-card">
+      <div class="num">Layer 1</div>
+      <h4>Infrastructure <code>infrastructure/</code></h4>
+      <ul>
+        <li>env.config.ts — all URLs, isCI flag</li>
+        <li>credentials.ts — auth from env vars</li>
+        <li>No Playwright imports here</li>
+      </ul>
+    </div>
+    <div class="layer-card">
+      <div class="num">Layer 2</div>
+      <h4>Abstraction <code>lib/</code></h4>
+      <ul>
+        <li>BasePage — abstract, page constructor</li>
+        <li>ReqresHomePage, PracticeAutomationLoginPage</li>
+        <li>ReqresApiClient — typed CRUD methods</li>
+        <li>pages.fixture.ts — test.extend() wiring</li>
+        <li>index.ts — single import point</li>
+      </ul>
+    </div>
+    <div class="layer-card">
+      <div class="num">Layer 3</div>
+      <h4>Tests <code>tests/</code></h4>
+      <ul>
+        <li>setup/auth.setup.ts — storageState auth</li>
+        <li>ui/reqres-home.spec.ts — UI specs</li>
+        <li>api/reqres-users.spec.ts — API specs</li>
+        <li>Import only from <code>lib/fixtures</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <br />
+  <div class="tree">
+<span class="dir">infrastructure/</span>             <span class="comment">← layer 1: config & credentials</span>
+  <span class="file">env.config.ts</span>             <span class="comment">← all URLs, isCI flag</span>
+  <span class="file">credentials.ts</span>            <span class="comment">← auth credentials from env vars</span>
+<span class="dir">lib/</span>                        <span class="comment">← layer 2: abstraction</span>
+  <span class="dir">ui/</span>                        <span class="comment">← page objects</span>
+    <span class="file">BasePage.ts</span>              <span class="comment">← abstract: page constructor + goto()</span>
+    <span class="file">ReqresHomePage.ts</span>        <span class="comment">← hero heading locator</span>
+    <span class="file">PracticeAutomationLoginPage.ts</span>  <span class="comment">← login flow</span>
+    <span class="file">GeeksForGeeksHomePage.ts</span> <span class="comment">← stub (no test yet)</span>
+  <span class="dir">api/</span>                       <span class="comment">← API clients</span>
+    <span class="file">ReqresApiClient.ts</span>       <span class="comment">← typed CRUD over JSONPlaceholder</span>
+  <span class="dir">fixtures/</span>                  <span class="comment">← dependency injection</span>
+    <span class="file">pages.fixture.ts</span>         <span class="comment">← test.extend() with all fixtures</span>
+    <span class="file">index.ts</span>                 <span class="comment">← single export point for tests</span>
+<span class="dir">tests/</span>                      <span class="comment">← layer 3: specs only</span>
+  <span class="dir">setup/</span>
+    <span class="file">auth.setup.ts</span>            <span class="comment">← login once, save storageState</span>
+  <span class="dir">ui/</span>
+    <span class="file">reqres-home.spec.ts</span>      <span class="comment">← hero heading visible</span>
+  <span class="dir">api/</span>
+    <span class="file">reqres-users.spec.ts</span>     <span class="comment">← CRUD: list, get, create, delete</span>
+<span class="file">playwright.config.ts</span>        <span class="comment">← parallel, retries, projects, reporter</span>
+  </div>
+
+  <!-- FEATURES -->
+  <h2>Current Features</h2>
+  <div class="features">
+    <div class="feature-card">
+      <div class="icon">🌐</div>
+      <h4>UI Tests (Playwright)</h4>
+      <p>Hero heading visibility on reqres.in · Auto-wait on every assertion · Headed Chrome locally, headless on CI</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🔌</div>
+      <h4>API Tests (built-in request)</h4>
+      <p>CRUD on JSONPlaceholder /users — list, get, create, delete · Typed interfaces, no extra dependency</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🔑</div>
+      <h4>Auth Setup + storageState</h4>
+      <p>Login runs once as a <code>setup</code> project · Session saved to <code>.auth/user.json</code> · All chromium tests reuse the session — no re-login per test</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">💉</div>
+      <h4>Fixtures via test.extend()</h4>
+      <p>Page objects and API clients injected as named fixtures · Tests declare what they need — no BaseTest inheritance, no setup boilerplate</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">⚡</div>
+      <h4>Parallel Execution</h4>
+      <p><code>fullyParallel: true</code> — every test file runs in its own worker · No shared state, no ThreadLocal needed · CI uses <code>workers: 1</code> for stability</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🔁</div>
+      <h4>Automatic Retries</h4>
+      <p><code>retries: 2</code> on CI · Trace captured on first retry for debugging · <code>retries: 0</code> locally — fast feedback</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🔍</div>
+      <h4>ESLint + Husky</h4>
+      <p>ESLint with TypeScript rules · Husky pre-commit runs <code>lint-staged</code> — linting enforced before every commit locally</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🚀</div>
+      <h4>Dual CI</h4>
+      <p>CircleCI on all branches · GitHub Actions on main/master PRs · HTML report artifact uploaded on every run</p>
+    </div>
+  </div>
+
+  <!-- INTENT -->
+  <h2>Intent</h2>
+  <p>Same three-layer intent as the Selenium counterpart — infrastructure, abstraction, tests — but expressed in TypeScript idioms. The <code>test.extend()</code> fixture pattern replaces inheritance: tests declare exactly what they need and receive it injected, making dependencies explicit and the test body free of setup noise.</p>
+  <p>The secondary intent is to show that API and UI testing can live in the same project, same language, same fixture system — without the overhead of a separate RestAssured dependency or a different language for API tests.</p>
+
+  <!-- GOOD / BAD -->
+  <h2>What Works Well / What Doesn't</h2>
+  <div class="verdict">
+    <div class="verdict-card good">
+      <h4>Works Well</h4>
+      <ul>
+        <li>Auto-wait — nearly zero explicit wait code needed</li>
+        <li>storageState auth — login once, reuse across all tests</li>
+        <li>test.extend() — fixtures compose cleanly, no inheritance chain</li>
+        <li>Unified API + UI — single import from <code>lib/fixtures</code></li>
+        <li>Trace on first retry — failure debugging without extra tooling</li>
+        <li>TypeScript — types catch refactoring mistakes at compile time</li>
+      </ul>
+    </div>
+    <div class="verdict-card bad">
+      <h4>Doesn't Work Well</h4>
+      <ul>
+        <li>ESLint not in CI — only runs via Husky pre-commit, can be bypassed with <code>--no-verify</code></li>
+        <li>No security scanning — no Trivy or equivalent in CI</li>
+        <li>GHA only triggers on main/master — feature branch pushes skip GHA, only CircleCI runs</li>
+        <li>GeeksForGeeksHomePage exists with no test — dead abstraction</li>
+        <li><code>retries: 2</code> on CI can mask genuine flakiness</li>
+        <li>No unit tests for infrastructure/fixtures layer</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- MISSING -->
+  <h2>What's Missing</h2>
+  <ul class="missing-list">
+    <li>
+      <span class="tag high">High</span>
+      <span><strong style="color:var(--text)">ESLint in CI</strong> — linting only runs via Husky locally. A developer who pushes with <code>--no-verify</code> skips it entirely. Add an ESLint job to the GHA workflow.</span>
+    </li>
+    <li>
+      <span class="tag high">High</span>
+      <span><strong style="color:var(--text)">Security scanning</strong> — no Trivy or npm audit in CI. Dependencies like <code>axios</code>, <code>googleapis</code>, and <code>twilio</code> are not scanned for CVEs.</span>
+    </li>
+    <li>
+      <span class="tag high">High</span>
+      <span><strong style="color:var(--text)">GHA triggers on all branches</strong> — currently only runs on <code>main</code>/<code>master</code>. Feature branch pushes get CircleCI only. Change to <code>branches: ["**"]</code> for full coverage.</span>
+    </li>
+    <li>
+      <span class="tag medium">Medium</span>
+      <span><strong style="color:var(--text)">Test for GeeksForGeeksHomePage</strong> — page object exists, no spec. Either add a test or remove the dead code.</span>
+    </li>
+    <li>
+      <span class="tag medium">Medium</span>
+      <span><strong style="color:var(--text)">Video on failure</strong> — trace is captured on first retry but no video. Add <code>video: 'on-first-retry'</code> for richer failure context in CI.</span>
+    </li>
+    <li>
+      <span class="tag low">Low</span>
+      <span><strong style="color:var(--text)">Unit tests for fixtures</strong> — <code>pages.fixture.ts</code> wiring and <code>env.config.ts</code> defaults are untested. A unit test catches misconfiguration before it shows up as a mysterious test failure.</span>
+    </li>
+    <li>
+      <span class="tag low">Low</span>
+      <span><strong style="color:var(--text)">ReqresHomePage heading locator</strong> — currently uses <code>"Your backend, live in your browser."</code> which may not match the live site heading. Should be verified against the actual page.</span>
+    </li>
+  </ul>
+
+  <!-- TRADEOFFS -->
+  <h2>Tradeoffs</h2>
+  <table>
+    <thead>
+      <tr><th>Decision</th><th>Why this choice</th><th>Cost</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>TypeScript</td>
+        <td>Type safety catches refactoring mistakes; same language as most modern frontend teams</td>
+        <td>Build step required; slightly more complex toolchain than plain JS</td>
+      </tr>
+      <tr>
+        <td>test.extend() over BaseTest inheritance</td>
+        <td>Composition — tests declare exactly what they need; easier to test fixtures in isolation</td>
+        <td>Mental model shift for engineers coming from xUnit/TestNG inheritance patterns</td>
+      </tr>
+      <tr>
+        <td>Built-in request context for API tests</td>
+        <td>No extra dependency; API and UI tests share the same fixture system</td>
+        <td>Less fluent DSL than RestAssured for complex request building</td>
+      </tr>
+      <tr>
+        <td>storageState for auth</td>
+        <td>Login runs once per suite, not once per test — faster, less flakiness risk</td>
+        <td>Session can expire mid-run; need a refresh strategy for long suites</td>
+      </tr>
+      <tr>
+        <td>Dual CI (CircleCI + GHA)</td>
+        <td>CircleCI for branch pushes, GHA for PR gate — both already exist</td>
+        <td>Two configs to maintain; easy to drift out of sync</td>
+      </tr>
+      <tr>
+        <td>Husky for linting (not CI)</td>
+        <td>Fast feedback at commit time; catches issues before push</td>
+        <td>Can be bypassed with <code>--no-verify</code>; not a hard gate</td>
+      </tr>
+      <tr>
+        <td>retries: 2 on CI</td>
+        <td>Reduces noise from transient CI failures (network, timing)</td>
+        <td>Masks genuine flakiness — a test that passes on retry 3 is still a flaky test</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ARCHITECTURE DIFF -->
+  <h2>Architecture Diff — Playwright vs Selenium</h2>
+  <p>Same three-layer philosophy, different language and tooling. Playwright (left) vs the Java/Selenium counterpart (right).</p>
+
+  <h3>Project Structure</h3>
+  <div class="diff-label">
+    <span class="lbl-pw">Playwright · TypeScript</span>
+    <span class="lbl-sel">Selenium · Java</span>
+  </div>
+  <div class="diff-struct">
+    <div class="tree">
+<span class="dir">infrastructure/</span>       <span class="comment">← layer 1</span>
+  <span class="file">env.config.ts</span>       <span class="comment">← URLs, env vars</span>
+  <span class="file">credentials.ts</span>
+<span class="dir">lib/</span>                  <span class="comment">← layer 2</span>
+  <span class="dir">ui/</span>                 <span class="comment">← page objects</span>
+    <span class="file">ReqresHomePage.ts</span>
+  <span class="dir">api/</span>
+    <span class="file">ReqresApiClient.ts</span>
+  <span class="dir">fixtures/</span>           <span class="comment">← DI via test.extend()</span>
+    <span class="file">index.ts</span>
+<span class="dir">tests/</span>                <span class="comment">← layer 3</span>
+  <span class="dir">setup/</span>
+  <span class="dir">ui/</span>
+  <span class="dir">api/</span>
+<span class="file">playwright.config.ts</span>
+    </div>
+    <div class="tree">
+<span class="dir">src/test/java/</span>
+  <span class="dir">common/</span>               <span class="comment">← layer 1</span>
+    <span class="file">AutomationConfigs.java</span>
+    <span class="dir">driver/</span>
+    <span class="dir">apis/</span>
+  <span class="dir">acceptance_test/</span>      <span class="comment">← layer 2+3</span>
+    <span class="dir">pom/</span>
+    <span class="file">BaseTest.java</span>       <span class="comment">← @Before/@After</span>
+    <span class="file">ReqresHomeTest.java</span>
+  <span class="dir">api_test/</span>
+    <span class="file">UsersApiTest.java</span>
+  <span class="dir">pojos/</span>
+<span class="dir">src/resources/</span>
+  <span class="file">config.properties</span>
+    </div>
+  </div>
+
+  <h3>Pattern Comparison</h3>
+  <div class="diff-label">
+    <span class="lbl-pw">Playwright · TypeScript</span>
+    <span class="lbl-sel">Selenium · Java</span>
+  </div>
+
+  <div class="diff-row">
+    <div class="diff-concept">Browser Setup</div>
+    <div class="diff-pw"><span class="cm">// playwright.config.ts — no binary management</span>
+projects: [{ name: <span class="ty">'chromium'</span>,
+  use: { ...devices[<span class="ty">'Desktop Chrome'</span>] } }]</div>
+    <div class="diff-sel"><span class="cm">// WebDriverManager resolves driver binary</span>
+WebDriverManager.chromedriver().setup();
+<span class="kw">driver</span> = <span class="kw">new</span> <span class="ty">ChromeDriver</span>();</div>
+  </div>
+
+  <div class="diff-row">
+    <div class="diff-concept">Process Isolation</div>
+    <div class="diff-pw"><span class="cm">// Worker processes — isolated by default</span>
+fullyParallel: <span class="kw">true</span>
+workers: 2  <span class="cm">// each worker = separate process</span></div>
+    <div class="diff-sel"><span class="cm">// ThreadLocal — one driver per thread</span>
+<span class="kw">private static final</span> <span class="ty">ThreadLocal</span>&lt;<span class="ty">WebDriver</span>&gt;
+  driverThreadLocal = <span class="kw">new</span> <span class="ty">ThreadLocal</span>&lt;&gt;();</div>
+  </div>
+
+  <div class="diff-row">
+    <div class="diff-concept">Page Object</div>
+    <div class="diff-pw"><span class="kw">export class</span> <span class="ty">ReqresHomePage</span> <span class="kw">extends</span> <span class="ty">BasePage</span> {
+  <span class="kw">readonly</span> heroHeading: <span class="ty">Locator</span>;
+  <span class="kw">constructor</span>(page: <span class="ty">Page</span>) {
+    <span class="kw">super</span>(page)
+    <span class="kw">this</span>.heroHeading = page.getByRole(<span class="ty">'heading'</span>,
+      { name: <span class="ty">/A real backend/i</span> })
+  }
+}</div>
+    <div class="diff-sel"><span class="kw">public class</span> <span class="ty">ReqresHomePage</span> <span class="kw">extends</span> <span class="ty">BasePage</span> {
+  <span class="kw">private static final</span> <span class="ty">By</span> HEADING =
+    <span class="ty">By</span>.xpath(<span class="ty">".//h1[contains(.,'A real backend')]"</span>);
+
+  <span class="kw">public boolean</span> isHeroHeadingVisible() {
+    <span class="kw">return</span> waitUntilPresent(HEADING).isDisplayed();
+  }
+}</div>
+  </div>
+
+  <div class="diff-row">
+    <div class="diff-concept">Fixtures / DI</div>
+    <div class="diff-pw"><span class="cm">// Composition — test.extend() injects fixtures</span>
+<span class="kw">const</span> { test } = <span class="kw">import</span>(<span class="ty">'lib/fixtures'</span>)
+test(<span class="ty">'hero heading visible'</span>,
+  <span class="kw">async</span> ({ reqresHome }) =&gt; {
+    <span class="kw">await</span> reqresHome.goto()
+    <span class="kw">await</span> expect(reqresHome.heroHeading).toBeVisible()
+  })</div>
+    <div class="diff-sel"><span class="cm">// Inheritance — BaseTest wires up shared state</span>
+<span class="kw">public class</span> <span class="ty">ReqresHomeTest</span> <span class="kw">extends</span> <span class="ty">BaseTest</span> {
+  <span class="cm">// reqresHomePage injected via @BeforeMethod</span>
+  @<span class="ty">Test</span>
+  <span class="kw">public void</span> verifyHeroHeading() {
+    <span class="ty">Assert</span>.assertTrue(reqresHomePage
+      .isHeroHeadingVisible());
+  }
+}</div>
+  </div>
+
+  <div class="diff-row">
+    <div class="diff-concept">Waits</div>
+    <div class="diff-pw"><span class="cm">// Auto-wait — built into every action and assertion</span>
+<span class="kw">await</span> expect(reqresHome.heroHeading).toBeVisible()
+<span class="cm">// retries assertion until visible or timeout</span></div>
+    <div class="diff-sel"><span class="cm">// Explicit — must wrap every interaction</span>
+<span class="kw">new</span> <span class="ty">WebDriverWait</span>(driver, <span class="ty">Duration</span>.ofSeconds(30))
+  .until(<span class="ty">ExpectedConditions</span>
+    .visibilityOfElementLocated(locator));</div>
+  </div>
+
+  <div class="diff-row">
+    <div class="diff-concept">API Testing</div>
+    <div class="diff-pw"><span class="cm">// Built-in request context — no extra dependency</span>
+<span class="kw">const</span> res = <span class="kw">await</span> request.post(<span class="ty">'/users'</span>,
+  { data: { name, job } })
+<span class="kw">const</span> user = <span class="kw">await</span> res.json()</div>
+    <div class="diff-sel"><span class="cm">// RestAssured — separate dependency</span>
+<span class="ty">Response</span> res = given()
+  .contentType(<span class="ty">ContentType</span>.JSON)
+  .body(payload).post(<span class="ty">"/users"</span>);
+<span class="ty">User</span> user = res.as(<span class="ty">User</span>.class);</div>
+  </div>
+
+  <div class="diff-row">
+    <div class="diff-concept">Auth</div>
+    <div class="diff-pw"><span class="cm">// storageState — login once, reuse session</span>
+setup(<span class="ty">'authenticate'</span>, <span class="kw">async</span> ({ page }) =&gt; {
+  <span class="kw">await</span> loginPage.login(user, pass)
+  <span class="kw">await</span> page.context()
+    .storageState({ path: <span class="ty">'.auth/user.json'</span> })
+})</div>
+    <div class="diff-sel"><span class="cm">// Login called per test via @BeforeMethod</span>
+@<span class="ty">BeforeMethod</span>
+<span class="kw">public void</span> setUp() {
+  loginPage.navigateTo();
+  loginPage.login(username, password);
+}</div>
+  </div>
+
+  <!-- VS SELENIUM -->
+  <h2>Playwright vs Selenium</h2>
+  <div class="vs-grid">
+    <div class="vs-card playwright">
+      <h4>Playwright (this repo)</h4>
+      <ul>
+        <li>Auto-wait — nearly zero flakiness by default</li>
+        <li>Trace viewer — visual replay of every failure</li>
+        <li>Built-in API testing — no extra dependency</li>
+        <li>Worker process isolation — no ThreadLocal needed</li>
+        <li>storageState — auth reuse across tests</li>
+        <li>Modern DX, fast to write, easy to debug</li>
+      </ul>
+    </div>
+    <div class="vs-card selenium">
+      <h4>Selenium (Java counterpart)</h4>
+      <ul>
+        <li>Cross-browser: Chrome, Firefox, Safari, Edge, IE</li>
+        <li>Cloud grid: BrowserStack, SauceLabs, Selenium Grid</li>
+        <li>Java — same language as backend/enterprise teams</li>
+        <li>Mature ecosystem, 15+ years of community answers</li>
+        <li>Standard in enterprise QA hiring</li>
+        <li>Security scanning (Trivy) and unit tests included</li>
+      </ul>
+    </div>
+  </div>
+  <div class="verdict-box">
+    <strong>Playwright's edge:</strong> developer experience, auto-wait, trace viewer, and unified API+UI in one tool. For most greenfield projects, it's the faster path to reliable tests.<br/><br/>
+    <strong>Selenium's edge:</strong> cross-browser coverage, cloud grid integrations, Java ecosystem alignment, and — in this repo specifically — more mature CI with security scanning and unit tests for the infrastructure layer.
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════ TIẾNG VIỆT ══════════════════════════ -->
+<div id="vi" class="version">
+<div class="container">
+
+  <div class="hero">
+    <h1>ui-api-<span>playwright</span></h1>
+    <p>Framework kiểm thử tự động bằng TypeScript cho cả UI và API. Kiến trúc 3 tầng xây trên các primitive gốc của Playwright — fixtures, request context, và auto-wait.</p>
+    <div class="badge-row">
+      <span class="badge">TypeScript 5.3</span>
+      <span class="badge">Playwright 1.60</span>
+      <span class="badge">Node 18</span>
+      <span class="badge">ESLint 8</span>
+      <span class="badge">Husky 8</span>
+      <span class="badge">CircleCI</span>
+      <span class="badge">GitHub Actions</span>
+    </div>
+  </div>
+
+  <!-- CẤU TRÚC -->
+  <h2>Cấu trúc</h2>
+  <p>Ba tầng rõ ràng. Infrastructure quản lý config và credentials. <code>lib/</code> chứa page objects, API clients và fixture wiring. Tests chỉ là thin specs, import từ <code>lib/fixtures</code>.</p>
+
+  <div class="layers">
+    <div class="layer-card">
+      <div class="num">Tầng 1</div>
+      <h4>Infrastructure <code>infrastructure/</code></h4>
+      <ul>
+        <li>env.config.ts — tất cả URL, flag isCI</li>
+        <li>credentials.ts — auth từ env vars</li>
+        <li>Không import Playwright ở đây</li>
+      </ul>
+    </div>
+    <div class="layer-card">
+      <div class="num">Tầng 2</div>
+      <h4>Abstraction <code>lib/</code></h4>
+      <ul>
+        <li>BasePage — abstract, constructor page</li>
+        <li>ReqresHomePage, PracticeAutomationLoginPage</li>
+        <li>ReqresApiClient — typed CRUD methods</li>
+        <li>pages.fixture.ts — test.extend() wiring</li>
+        <li>index.ts — single export point</li>
+      </ul>
+    </div>
+    <div class="layer-card">
+      <div class="num">Tầng 3</div>
+      <h4>Tests <code>tests/</code></h4>
+      <ul>
+        <li>setup/auth.setup.ts — storageState auth</li>
+        <li>ui/reqres-home.spec.ts — UI specs</li>
+        <li>api/reqres-users.spec.ts — API specs</li>
+        <li>Chỉ import từ <code>lib/fixtures</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <br />
+  <div class="tree">
+<span class="dir">infrastructure/</span>             <span class="comment">← tầng 1: config & credentials</span>
+  <span class="file">env.config.ts</span>             <span class="comment">← tất cả URL, flag isCI</span>
+  <span class="file">credentials.ts</span>            <span class="comment">← auth từ env vars</span>
+<span class="dir">lib/</span>                        <span class="comment">← tầng 2: abstraction</span>
+  <span class="dir">ui/</span>                        <span class="comment">← page objects</span>
+    <span class="file">BasePage.ts</span>              <span class="comment">← abstract: constructor + goto()</span>
+    <span class="file">ReqresHomePage.ts</span>        <span class="comment">← locator hero heading</span>
+    <span class="file">PracticeAutomationLoginPage.ts</span>  <span class="comment">← login flow</span>
+    <span class="file">GeeksForGeeksHomePage.ts</span> <span class="comment">← stub (chưa có test)</span>
+  <span class="dir">api/</span>                       <span class="comment">← API clients</span>
+    <span class="file">ReqresApiClient.ts</span>       <span class="comment">← typed CRUD trên JSONPlaceholder</span>
+  <span class="dir">fixtures/</span>                  <span class="comment">← dependency injection</span>
+    <span class="file">pages.fixture.ts</span>         <span class="comment">← test.extend() wiring</span>
+    <span class="file">index.ts</span>                 <span class="comment">← single export point cho tests</span>
+<span class="dir">tests/</span>                      <span class="comment">← tầng 3: specs only</span>
+  <span class="dir">setup/</span>
+    <span class="file">auth.setup.ts</span>            <span class="comment">← login 1 lần, lưu storageState</span>
+  <span class="dir">ui/</span>
+    <span class="file">reqres-home.spec.ts</span>      <span class="comment">← hero heading visible</span>
+  <span class="dir">api/</span>
+    <span class="file">reqres-users.spec.ts</span>     <span class="comment">← CRUD: list, get, create, delete</span>
+<span class="file">playwright.config.ts</span>        <span class="comment">← parallel, retries, projects, reporter</span>
+  </div>
+
+  <!-- TÍNH NĂNG -->
+  <h2>Tính năng hiện tại</h2>
+  <div class="features">
+    <div class="feature-card">
+      <div class="icon">🌐</div>
+      <h4>UI Tests (Playwright)</h4>
+      <p>Kiểm tra hero heading trên reqres.in · Auto-wait mọi assertion · Headed local, headless trên CI</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🔌</div>
+      <h4>API Tests (built-in request)</h4>
+      <p>CRUD trên JSONPlaceholder /users · Typed interfaces · Không cần dependency thêm</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🔑</div>
+      <h4>Auth Setup + storageState</h4>
+      <p>Login chạy 1 lần như project <code>setup</code> · Session lưu vào <code>.auth/user.json</code> · Toàn bộ test chromium tái sử dụng session — không cần login lại</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">💉</div>
+      <h4>Fixtures via test.extend()</h4>
+      <p>Page objects và API clients inject qua named fixtures · Test khai báo cần gì — không kế thừa BaseTest, không có boilerplate setup</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">⚡</div>
+      <h4>Parallel Execution</h4>
+      <p><code>fullyParallel: true</code> — mỗi file test chạy trong worker riêng · Không share state · CI dùng <code>workers: 1</code> để ổn định</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🔁</div>
+      <h4>Automatic Retries</h4>
+      <p><code>retries: 2</code> trên CI · Trace bắt ở retry đầu tiên để debug · <code>retries: 0</code> local — feedback nhanh</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🔍</div>
+      <h4>ESLint + Husky</h4>
+      <p>ESLint với TypeScript rules · Husky pre-commit chạy <code>lint-staged</code> — lint được enforce trước mỗi commit local</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🚀</div>
+      <h4>Dual CI</h4>
+      <p>CircleCI trên mọi branch · GitHub Actions trên PR vào main/master · HTML report upload mỗi lần chạy</p>
+    </div>
+  </div>
+
+  <!-- MỤC TIÊU -->
+  <h2>Mục tiêu thiết kế</h2>
+  <p>Cùng triết lý 3 tầng với Selenium counterpart — infrastructure, abstraction, tests — nhưng thể hiện bằng TypeScript idioms. Pattern <code>test.extend()</code> thay thế inheritance: test khai báo đúng những gì nó cần và nhận qua injection, giúp dependencies rõ ràng và test body không còn setup noise.</p>
+  <p>Mục tiêu thứ hai là chứng minh rằng API testing và UI testing có thể sống trong cùng project, cùng ngôn ngữ, cùng fixture system — không cần dependency RestAssured riêng hay ngôn ngữ khác cho API.</p>
+
+  <!-- TỐT / CHƯA TỐT -->
+  <h2>Điểm tốt / Chưa tốt</h2>
+  <div class="verdict">
+    <div class="verdict-card good">
+      <h4>Điểm tốt</h4>
+      <ul>
+        <li>Auto-wait — gần như không cần code wait thủ công</li>
+        <li>storageState auth — login 1 lần, dùng lại mọi test</li>
+        <li>test.extend() — fixtures compose sạch, không có chuỗi kế thừa</li>
+        <li>API + UI thống nhất — một import từ <code>lib/fixtures</code></li>
+        <li>Trace on first retry — debug failure mà không cần tool thêm</li>
+        <li>TypeScript — types bắt lỗi refactoring lúc compile</li>
+      </ul>
+    </div>
+    <div class="verdict-card bad">
+      <h4>Chưa tốt</h4>
+      <ul>
+        <li>ESLint không chạy trên CI — chỉ qua Husky, có thể bypass bằng <code>--no-verify</code></li>
+        <li>Không có security scanning — không có Trivy hay npm audit</li>
+        <li>GHA chỉ trigger trên main/master — feature branch bỏ qua GHA</li>
+        <li>GeeksForGeeksHomePage tồn tại không có test — dead code</li>
+        <li><code>retries: 2</code> trên CI có thể che giấu flakiness thực sự</li>
+        <li>Không có unit tests cho tầng infrastructure/fixtures</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- THIẾU -->
+  <h2>Còn thiếu gì</h2>
+  <ul class="missing-list">
+    <li>
+      <span class="tag high">Cao</span>
+      <span><strong style="color:var(--text)">ESLint trong CI</strong> — lint chỉ chạy local qua Husky. Dev push với <code>--no-verify</code> là bỏ qua hoàn toàn. Cần thêm ESLint job vào GHA workflow.</span>
+    </li>
+    <li>
+      <span class="tag high">Cao</span>
+      <span><strong style="color:var(--text)">Security scanning</strong> — không có Trivy hay npm audit trong CI. Các dep như <code>axios</code>, <code>googleapis</code>, <code>twilio</code> chưa được scan CVE.</span>
+    </li>
+    <li>
+      <span class="tag high">Cao</span>
+      <span><strong style="color:var(--text)">GHA trigger trên mọi branch</strong> — hiện chỉ chạy trên <code>main</code>/<code>master</code>. Feature branch chỉ có CircleCI. Đổi thành <code>branches: ["**"]</code>.</span>
+    </li>
+    <li>
+      <span class="tag medium">Vừa</span>
+      <span><strong style="color:var(--text)">Test cho GeeksForGeeksHomePage</strong> — page object đã có, không có spec. Thêm test hoặc xóa dead code.</span>
+    </li>
+    <li>
+      <span class="tag medium">Vừa</span>
+      <span><strong style="color:var(--text)">Video khi fail</strong> — trace bắt ở retry đầu nhưng không có video. Thêm <code>video: 'on-first-retry'</code> để debug trên CI phong phú hơn.</span>
+    </li>
+    <li>
+      <span class="tag low">Thấp</span>
+      <span><strong style="color:var(--text)">Unit tests cho fixtures</strong> — wiring trong <code>pages.fixture.ts</code> và defaults của <code>env.config.ts</code> chưa được test. Một unit test bắt misconfiguration trước khi nó hiện ra là lỗi test bí ẩn.</span>
+    </li>
+    <li>
+      <span class="tag low">Thấp</span>
+      <span><strong style="color:var(--text)">Locator ReqresHomePage</strong> — đang dùng <code>"Your backend, live in your browser."</code> có thể không khớp heading thực trên site. Cần verify lại với trang thật.</span>
+    </li>
+  </ul>
+
+  <!-- TRADEOFFS -->
+  <h2>Các đánh đổi (Tradeoffs)</h2>
+  <table>
+    <thead>
+      <tr><th>Quyết định</th><th>Lý do chọn</th><th>Chi phí phải trả</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>TypeScript</td>
+        <td>Type safety bắt lỗi refactoring lúc compile; cùng ngôn ngữ với frontend team hiện đại</td>
+        <td>Cần build step; toolchain phức tạp hơn JS thuần</td>
+      </tr>
+      <tr>
+        <td>test.extend() thay vì kế thừa BaseTest</td>
+        <td>Composition — test khai báo đúng cái cần; fixture dễ test độc lập hơn</td>
+        <td>Mental model shift với engineer quen xUnit/TestNG inheritance</td>
+      </tr>
+      <tr>
+        <td>Built-in request context cho API</td>
+        <td>Không cần dependency thêm; API và UI dùng chung fixture system</td>
+        <td>DSL ít fluent hơn RestAssured khi build request phức tạp</td>
+      </tr>
+      <tr>
+        <td>storageState cho auth</td>
+        <td>Login 1 lần per suite — nhanh hơn, ít risk flakiness hơn</td>
+        <td>Session có thể hết hạn giữa chừng; cần refresh strategy cho suite dài</td>
+      </tr>
+      <tr>
+        <td>Dual CI (CircleCI + GHA)</td>
+        <td>CircleCI cho branch push, GHA cho PR gate — cả hai đã tồn tại</td>
+        <td>Hai config cần maintain; dễ drift ra khỏi sync nhau</td>
+      </tr>
+      <tr>
+        <td>Husky cho lint (không phải CI)</td>
+        <td>Feedback nhanh lúc commit; bắt lỗi trước khi push</td>
+        <td>Bypass được bằng <code>--no-verify</code>; không phải hard gate</td>
+      </tr>
+      <tr>
+        <td>retries: 2 trên CI</td>
+        <td>Giảm noise từ CI failure nhất thời (network, timing)</td>
+        <td>Che giấu flakiness thực — test pass ở retry 3 vẫn là flaky test</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ARCHITECTURE DIFF -->
+  <h2>So sánh kiến trúc — Playwright vs Selenium</h2>
+  <p>Cùng triết lý 3 tầng, khác ngôn ngữ và tooling. Playwright (trái) vs Java/Selenium counterpart (phải).</p>
+
+  <h3>Cấu trúc thư mục</h3>
+  <div class="diff-label">
+    <span class="lbl-pw">Playwright · TypeScript</span>
+    <span class="lbl-sel">Selenium · Java</span>
+  </div>
+  <div class="diff-struct">
+    <div class="tree">
+<span class="dir">infrastructure/</span>       <span class="comment">← tầng 1</span>
+  <span class="file">env.config.ts</span>       <span class="comment">← URLs, env vars</span>
+  <span class="file">credentials.ts</span>
+<span class="dir">lib/</span>                  <span class="comment">← tầng 2</span>
+  <span class="dir">ui/</span>
+    <span class="file">ReqresHomePage.ts</span>
+  <span class="dir">api/</span>
+    <span class="file">ReqresApiClient.ts</span>
+  <span class="dir">fixtures/</span>
+    <span class="file">index.ts</span>
+<span class="dir">tests/</span>                <span class="comment">← tầng 3</span>
+  <span class="dir">setup/</span>
+  <span class="dir">ui/</span>
+  <span class="dir">api/</span>
+<span class="file">playwright.config.ts</span>
+    </div>
+    <div class="tree">
+<span class="dir">src/test/java/</span>
+  <span class="dir">common/</span>               <span class="comment">← tầng 1</span>
+    <span class="file">AutomationConfigs.java</span>
+    <span class="dir">driver/</span>
+    <span class="dir">apis/</span>
+  <span class="dir">acceptance_test/</span>      <span class="comment">← tầng 2+3</span>
+    <span class="dir">pom/</span>
+    <span class="file">BaseTest.java</span>
+    <span class="file">ReqresHomeTest.java</span>
+  <span class="dir">api_test/</span>
+    <span class="file">UsersApiTest.java</span>
+  <span class="dir">pojos/</span>
+<span class="dir">src/resources/</span>
+  <span class="file">config.properties</span>
+    </div>
+  </div>
+
+  <h3>So sánh từng pattern</h3>
+  <div class="diff-label">
+    <span class="lbl-pw">Playwright · TypeScript</span>
+    <span class="lbl-sel">Selenium · Java</span>
+  </div>
+
+  <div class="diff-row">
+    <div class="diff-concept">Khởi tạo browser</div>
+    <div class="diff-pw"><span class="cm">// playwright.config.ts — không cần binary</span>
+projects: [{ name: <span class="ty">'chromium'</span>,
+  use: { ...devices[<span class="ty">'Desktop Chrome'</span>] } }]</div>
+    <div class="diff-sel"><span class="cm">// WebDriverManager tải driver binary về</span>
+WebDriverManager.chromedriver().setup();
+<span class="kw">driver</span> = <span class="kw">new</span> <span class="ty">ChromeDriver</span>();</div>
+  </div>
+
+  <div class="diff-row">
+    <div class="diff-concept">Process Isolation</div>
+    <div class="diff-pw"><span class="cm">// Worker process — không share state từ đầu</span>
+fullyParallel: <span class="kw">true</span>
+workers: 2  <span class="cm">// mỗi worker = process độc lập</span></div>
+    <div class="diff-sel"><span class="cm">// ThreadLocal — mỗi thread có driver riêng</span>
+<span class="kw">private static final</span> <span class="ty">ThreadLocal</span>&lt;<span class="ty">WebDriver</span>&gt;
+  driverThreadLocal = <span class="kw">new</span> <span class="ty">ThreadLocal</span>&lt;&gt;();</div>
+  </div>
+
+  <div class="diff-row">
+    <div class="diff-concept">Fixtures / DI</div>
+    <div class="diff-pw"><span class="cm">// Composition — test.extend() inject fixture</span>
+<span class="kw">const</span> { test } = <span class="kw">import</span>(<span class="ty">'lib/fixtures'</span>)
+test(<span class="ty">'hero heading visible'</span>,
+  <span class="kw">async</span> ({ reqresHome }) =&gt; {
+    <span class="kw">await</span> reqresHome.goto()
+    <span class="kw">await</span> expect(reqresHome.heroHeading).toBeVisible()
+  })</div>
+    <div class="diff-sel"><span class="cm">// Kế thừa — BaseTest setup shared state</span>
+<span class="kw">public class</span> <span class="ty">ReqresHomeTest</span> <span class="kw">extends</span> <span class="ty">BaseTest</span> {
+  @<span class="ty">Test</span>
+  <span class="kw">public void</span> verifyHeroHeading() {
+    <span class="ty">Assert</span>.assertTrue(reqresHomePage
+      .isHeroHeadingVisible());
+  }
+}</div>
+  </div>
+
+  <div class="diff-row">
+    <div class="diff-concept">Waits</div>
+    <div class="diff-pw"><span class="cm">// Auto-wait — tích hợp sẵn trong mọi action</span>
+<span class="kw">await</span> expect(reqresHome.heroHeading).toBeVisible()
+<span class="cm">// tự retry cho đến khi visible hoặc timeout</span></div>
+    <div class="diff-sel"><span class="cm">// Explicit — phải bọc mỗi tương tác</span>
+<span class="kw">new</span> <span class="ty">WebDriverWait</span>(driver, <span class="ty">Duration</span>.ofSeconds(30))
+  .until(<span class="ty">ExpectedConditions</span>
+    .visibilityOfElementLocated(locator));</div>
+  </div>
+
+  <div class="diff-row">
+    <div class="diff-concept">Auth</div>
+    <div class="diff-pw"><span class="cm">// storageState — login 1 lần, dùng lại session</span>
+setup(<span class="ty">'authenticate'</span>, <span class="kw">async</span> ({ page }) =&gt; {
+  <span class="kw">await</span> loginPage.login(user, pass)
+  <span class="kw">await</span> page.context()
+    .storageState({ path: <span class="ty">'.auth/user.json'</span> })
+})</div>
+    <div class="diff-sel"><span class="cm">// Login gọi mỗi test qua @BeforeMethod</span>
+@<span class="ty">BeforeMethod</span>
+<span class="kw">public void</span> setUp() {
+  loginPage.navigateTo();
+  loginPage.login(username, password);
+}</div>
+  </div>
+
+  <!-- VS SELENIUM -->
+  <h2>Playwright vs Selenium</h2>
+  <div class="vs-grid">
+    <div class="vs-card playwright">
+      <h4>Playwright (repo này)</h4>
+      <ul>
+        <li>Auto-wait — gần như không flaky mặc định</li>
+        <li>Trace viewer — xem lại từng bước khi fail</li>
+        <li>API testing có sẵn — không cần dep thêm</li>
+        <li>Worker process isolation — không cần ThreadLocal</li>
+        <li>storageState — tái sử dụng auth qua các test</li>
+        <li>DX hiện đại, viết nhanh, debug dễ</li>
+      </ul>
+    </div>
+    <div class="vs-card selenium">
+      <h4>Selenium (Java counterpart)</h4>
+      <ul>
+        <li>Đa browser: Chrome, Firefox, Safari, Edge, IE</li>
+        <li>Cloud grid: BrowserStack, SauceLabs, Selenium Grid</li>
+        <li>Java — cùng ngôn ngữ với backend/enterprise team</li>
+        <li>Hệ sinh thái trưởng thành, 15+ năm cộng đồng</li>
+        <li>Tiêu chuẩn trong tuyển dụng QA enterprise</li>
+        <li>Security scanning (Trivy) và unit tests đã có</li>
+      </ul>
+    </div>
+  </div>
+  <div class="verdict-box">
+    <strong>Lợi thế Playwright:</strong> developer experience, auto-wait, trace viewer, và API+UI thống nhất trong một tool. Với hầu hết project mới, đây là con đường nhanh nhất đến reliable tests.<br/><br/>
+    <strong>Lợi thế Selenium:</strong> cross-browser coverage, cloud grid integrations, Java ecosystem alignment, và — cụ thể trong repo kia — CI trưởng thành hơn với security scanning và unit tests cho tầng infrastructure.
+  </div>
+
+</div>
+</div>
+
+<script>
+  function setLang(lang) {
+    document.querySelectorAll('.version').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.lang-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById(lang).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+</body>
+</html>
