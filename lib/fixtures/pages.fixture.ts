@@ -1,7 +1,8 @@
 import { test as base } from '@playwright/test'
 import { ReqresHomePage } from '../ui/ReqresHomePage'
 import { PlaywrightHomePage } from '../ui/PlaywrightHomePage'
-import { ReqresApiClient } from '../api/ReqresApiClient'
+import { JsonPlaceholderApiClient } from '../api/JsonPlaceholderApiClient'
+import { config } from '../../infrastructure/env.config'
 
 type PageFixtures = {
   reqresHome: ReqresHomePage
@@ -9,7 +10,7 @@ type PageFixtures = {
 }
 
 type ApiFixtures = {
-  reqresApi: ReqresApiClient
+  jsonPlaceholderApi: JsonPlaceholderApiClient
 }
 
 export const test = base.extend<PageFixtures & ApiFixtures>({
@@ -19,8 +20,8 @@ export const test = base.extend<PageFixtures & ApiFixtures>({
   playwrightHome: async ({ page }, use) => {
     await use(new PlaywrightHomePage(page))
   },
-  reqresApi: async ({ request }, use) => {
-    await use(new ReqresApiClient(request))
+  jsonPlaceholderApi: async ({ request }, use) => {
+    await use(new JsonPlaceholderApiClient(request, config.jsonPlaceholderURL))
   },
 })
 
