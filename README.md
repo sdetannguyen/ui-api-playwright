@@ -49,16 +49,16 @@ lib/ui/
 
 **API — Typed Service Clients** (`lib/api/`)
 
-API clients wrap Playwright's built-in `request` context with a typed method interface. Tests call `reqresApi.getUser(2)` — not `request.get('/users/2')`. Response shapes are typed so assertion errors surface at compile time.
+API clients wrap Playwright's built-in `request` context with a typed method interface. Tests call `jsonPlaceholderApi.getUser(2)` — not `request.get('/users/2')`. Each client receives its own base URL via constructor injection, so multiple services can coexist without a shared global `baseURL`. Response shapes are typed so assertion errors surface at compile time.
 
 ```
 lib/api/
-  ReqresApiClient.ts              ← typed client over @playwright/test request context
+  JsonPlaceholderApiClient.ts     ← typed client over @playwright/test request context
 ```
 
 **Fixtures** (`lib/fixtures/`)
 
-Fixtures wire page objects and API clients into Playwright's test context. Tests destructure what they need — `{ reqresHome }` or `{ reqresApi }` — with no setup boilerplate.
+Fixtures wire page objects and API clients into Playwright's test context. Tests destructure what they need — `{ reqresHome }` or `{ jsonPlaceholderApi }` — with no setup boilerplate.
 
 ```
 lib/fixtures/
@@ -74,17 +74,17 @@ Intentionally thin. A test reads like a specification: arrange, act, assert. If 
 tests/
   setup/auth.setup.ts             ← saves auth storage state before the suite runs
   ui/reqres-home.spec.ts
-  api/reqres-users.spec.ts
+  api/jsonplaceholder-users.spec.ts
 ```
 
 Tests import only from `lib/fixtures` — never directly from page objects or API clients.
 
 ```typescript
-// tests/api/reqres-users.spec.ts
+// tests/api/jsonplaceholder-users.spec.ts
 import { test, expect } from '../../lib/fixtures'
 
-test('GET /users/:id returns the correct user', async ({ reqresApi }) => {
-  const user = await reqresApi.getUser(2)
+test('GET /users/:id returns the correct user', async ({ jsonPlaceholderApi }) => {
+  const user = await jsonPlaceholderApi.getUser(2)
 
   expect(user.id).toBe(2)
   expect(user.email).toBeTruthy()
@@ -162,7 +162,7 @@ All defaults work out of the box for local runs. Override via env vars for diffe
 
 | Variable | Default | Description |
 |---|---|---|
-| `BASE_URL` | `https://jsonplaceholder.typicode.com` | Base URL for API request context |
+| `JSON_PLACEHOLDER_URL` | `https://jsonplaceholder.typicode.com` | Base URL for the JsonPlaceholder API client |
 | `REQRES_URL` | `https://reqres.in` | reqres.in homepage for UI tests |
 | `PRACTICE_AUTOMATION_URL` | `https://practicetestautomation.com` | Auth setup target |
 | `PRACTICE_USERNAME` | `student` | Login username |

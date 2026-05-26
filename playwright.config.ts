@@ -9,7 +9,6 @@ export default defineConfig({
   workers: config.isCI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: config.baseURL,
     extraHTTPHeaders: {
       requester: 'playwright',
     },
