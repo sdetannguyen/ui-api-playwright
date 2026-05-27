@@ -681,7 +681,7 @@ git commit -m "Add domHeuristic strategy for HealableLocator"
 - Create: `lib/healing/strategies/semantic.ts`
 - Modify: `tests/healing/strategies.spec.ts`
 
-- [ ] **Step 1: Add failing test to the existing spec**
+- [x] **Step 1: Add failing test to the existing spec**
 
 Append to `tests/healing/strategies.spec.ts`:
 
@@ -701,12 +701,12 @@ test.describe('semanticCandidates', () => {
 })
 ```
 
-- [ ] **Step 2: Run, expect fail**
+- [x] **Step 2: Run, expect fail**
 
 Run: `npx playwright test tests/healing/strategies.spec.ts --project=chromium`
 Expected: 2 new tests FAIL with "Cannot find module".
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `lib/healing/strategies/semantic.ts`:
 
@@ -740,12 +740,12 @@ export function semanticCandidates(primaryExpr: string): string[] {
 }
 ```
 
-- [ ] **Step 4: Run, expect pass**
+- [x] **Step 4: Run, expect pass**
 
 Run: `npx playwright test tests/healing/strategies.spec.ts --project=chromium`
 Expected: 4 passed.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add lib/healing/strategies/semantic.ts tests/healing/strategies.spec.ts
