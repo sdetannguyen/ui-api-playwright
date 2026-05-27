@@ -1,19 +1,32 @@
-import { type Page, type Locator } from '@playwright/test'
+import { type Page } from '@playwright/test'
 import { BasePage } from './BasePage'
+import { HealableLocator, healable } from '../healing'
 import { config } from '../../infrastructure/env.config'
 
 export class PracticeAutomationLoginPage extends BasePage {
-  readonly usernameField: Locator
-  readonly passwordField: Locator
-  readonly submitBtn: Locator
-  readonly congratLocator: Locator
+  readonly usernameField: HealableLocator
+  readonly passwordField: HealableLocator
+  readonly submitBtn: HealableLocator
+  readonly congratLocator: HealableLocator
 
   constructor(page: Page) {
     super(page)
-    this.usernameField = page.getByLabel('Username')
-    this.passwordField = page.getByLabel('Password')
-    this.submitBtn = page.getByRole('button', { name: 'Submit' })
-    this.congratLocator = page.getByText('Congratulations student. You')
+    this.usernameField = healable(
+      page.getByLabel('Username'),
+      [page.locator('input[name="username"]'), page.locator('input[type="text"]').first()],
+    )
+    this.passwordField = healable(
+      page.getByLabel('Password'),
+      [page.locator('input[name="password"]'), page.locator('input[type="password"]').first()],
+    )
+    this.submitBtn = healable(
+      page.getByRole('button', { name: 'Submit' }),
+      [page.locator('button[type="submit"]'), page.locator('input[type="submit"]')],
+    )
+    this.congratLocator = healable(
+      page.getByText('Congratulations student. You'),
+      [page.getByText(/congratulations/i)],
+    )
   }
 
   async goto() {

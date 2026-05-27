@@ -8,6 +8,6 @@ setup('authenticate', async ({ page }) => {
   const loginPage = new PracticeAutomationLoginPage(page)
   await loginPage.goto()
   await loginPage.login(credentials.practiceAutomation.username, credentials.practiceAutomation.password)
-  await expect(loginPage.congratLocator).toBeVisible()
+  await expect(loginPage.congratLocator.primary_locator).toBeVisible()
   await page.context().storageState({ path: authFile })
 })

@@ -955,7 +955,7 @@ git commit -m "Migrate ReqresHomePage to HealableLocator + add signupCallout sel
 **Files:**
 - Modify: `lib/ui/PracticeAutomationLoginPage.ts`
 
-- [ ] **Step 1: Edit the file**
+- [x] **Step 1: Edit the file**
 
 Replace the existing content with:
 
@@ -1003,17 +1003,17 @@ export class PracticeAutomationLoginPage extends BasePage {
 }
 ```
 
-- [ ] **Step 2: Run auth setup, expect pass**
+- [x] **Step 2: Run auth setup, expect pass**
 
 Run: `npx playwright test tests/setup/auth.setup.ts --project=setup`
 Expected: PASS.
 
-- [ ] **Step 3: Run full suite, expect pass**
+- [x] **Step 3: Run full suite, expect pass**
 
 Run: `npx playwright test --project=chromium`
 Expected: all existing tests pass.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add lib/ui/PracticeAutomationLoginPage.ts
