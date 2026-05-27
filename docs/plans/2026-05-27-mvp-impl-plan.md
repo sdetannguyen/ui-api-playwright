@@ -264,7 +264,7 @@ Expected: no error.
 **Files:**
 - Create: `.claude/skills/plan-tests.md`
 
-- [ ] **Step 1: Create directory + file**
+- [x] **Step 1: Create directory + file**
 
 ```bash
 mkdir -p .claude/skills
@@ -322,7 +322,7 @@ Expected output style:
 Conform to the format strictly. No additional sections.
 ```
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 Run: `head -5 .claude/skills/plan-tests.md`
 Expected: shows frontmatter with `name: plan-tests`.
