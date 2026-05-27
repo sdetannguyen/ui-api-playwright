@@ -600,7 +600,7 @@ Expected: shows about 11 new files under docs/skills, agents/skills, .claude, .m
 - Create: `lib/healing/strategies/domHeuristic.ts`
 - Create: `tests/healing/strategies.spec.ts`
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 ```bash
 mkdir -p lib/healing/strategies tests/healing
@@ -625,12 +625,12 @@ test.describe('domHeuristicCandidates', () => {
 })
 ```
 
-- [ ] **Step 2: Run, expect fail**
+- [x] **Step 2: Run, expect fail**
 
 Run: `npx playwright test tests/healing/strategies.spec.ts --project=chromium`
 Expected: FAIL with "Cannot find module".
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `lib/healing/strategies/domHeuristic.ts`:
 
@@ -663,12 +663,12 @@ export function domHeuristicCandidates(primaryExpr: string): string[] {
 }
 ```
 
-- [ ] **Step 4: Run, expect pass**
+- [x] **Step 4: Run, expect pass**
 
 Run: `npx playwright test tests/healing/strategies.spec.ts --project=chromium`
 Expected: 2 passed.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add lib/healing/strategies/domHeuristic.ts tests/healing/strategies.spec.ts
