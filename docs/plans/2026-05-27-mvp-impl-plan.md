@@ -126,7 +126,7 @@ Expected: at least 13 lines.
 **Files:**
 - Create: `docs/skills/scaffold-test-output-format.md`
 
-- [ ] **Step 1: Create the contract file**
+- [x] **Step 1: Create the contract file**
 
 ```markdown
 # scaffold-test output format
@@ -148,7 +148,7 @@ scaffold-test writes one or two files into the repo. It MUST conform to:
 This constructor-literal convention is required by `agents/apply-patch.ts` to locate selectors via ts-morph.
 ```
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 Run: `wc -l docs/skills/scaffold-test-output-format.md`
 Expected: at least 14 lines.
