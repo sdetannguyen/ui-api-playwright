@@ -759,7 +759,7 @@ git commit -m "Add semantic strategy for HealableLocator"
 - Create: `lib/healing/index.ts`
 - Create: `tests/healing/HealableLocator.spec.ts`
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `tests/healing/HealableLocator.spec.ts`:
 
@@ -799,12 +799,12 @@ test('all strategies exhausted throws', async ({ page }) => {
 })
 ```
 
-- [ ] **Step 2: Run, expect fail**
+- [x] **Step 2: Run, expect fail**
 
 Run: `npx playwright test tests/healing/HealableLocator.spec.ts --project=chromium`
 Expected: 4 FAIL with "Cannot find module".
 
-- [ ] **Step 3: Implement HealableLocator**
+- [x] **Step 3: Implement HealableLocator**
 
 Create `lib/healing/HealableLocator.ts`:
 
@@ -855,7 +855,7 @@ export function healable(primary: Locator, fallbacks: Locator[]): HealableLocato
 }
 ```
 
-- [ ] **Step 4: Create index re-export**
+- [x] **Step 4: Create index re-export**
 
 Create `lib/healing/index.ts`:
 
@@ -863,12 +863,12 @@ Create `lib/healing/index.ts`:
 export { HealableLocator, healable } from './HealableLocator'
 ```
 
-- [ ] **Step 5: Run, expect pass**
+- [x] **Step 5: Run, expect pass**
 
 Run: `npx playwright test tests/healing/HealableLocator.spec.ts --project=chromium`
 Expected: 4 passed.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add lib/healing/HealableLocator.ts lib/healing/index.ts tests/healing/HealableLocator.spec.ts
