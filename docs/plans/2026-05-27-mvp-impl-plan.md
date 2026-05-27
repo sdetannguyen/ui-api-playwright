@@ -332,7 +332,7 @@ Expected: shows frontmatter with `name: plan-tests`.
 **Files:**
 - Create: `.claude/skills/scaffold-test.md`
 
-- [ ] **Step 1: Create file**
+- [x] **Step 1: Create file**
 
 ```markdown
 ---
@@ -370,7 +370,7 @@ Print to stdout: the paths of the files you wrote, then a brief explanation of a
 - Page object extends `BasePage`. All selectors are `HealableLocator`. Each selector is assigned in the constructor via a literal `healable(primary, [fallbacks])` call.
 ```
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 Run: `grep "name: scaffold-test" .claude/skills/scaffold-test.md`
 Expected: prints one match.
