@@ -1029,7 +1029,7 @@ git commit -m "Migrate PracticeAutomationLoginPage to HealableLocator"
 **Files:**
 - None modified in this task.
 
-- [ ] **Step 1: Open Claude Code in the repo root, invoke the skill**
+- [x] **Step 1: Open Claude Code in the repo root, invoke the skill**
 
 Open Claude Code in the repository directory. In Claude Code, run:
 
@@ -1037,15 +1037,15 @@ Open Claude Code in the repository directory. In Claude Code, run:
 /plan-tests evals/plan-tests/cases/example-1/input/story.md
 ```
 
-- [ ] **Step 2: Capture stdout to a temp file**
+- [x] **Step 2: Capture stdout to a temp file**
 
 Save the agent's output to `/tmp/plan-tests-actual.md`.
 
-- [ ] **Step 3: Conformance check by hand against the format contract**
+- [x] **Step 3: Conformance check by hand against the format contract**
 
 Open `docs/skills/plan-tests-output-format.md`. Verify the output has the three H2 sections in order, the Proposed Cases table has the four required columns, and at least three rows.
 
-- [ ] **Step 4: Iterate prompt if the output drifts**
+- [x] **Step 4: Iterate prompt if the output drifts**
 
 If a section is missing or the table schema is wrong, edit `.claude/skills/plan-tests.md`. Re-invoke. Repeat until conformance.
 
@@ -1055,11 +1055,11 @@ If a section is missing or the table schema is wrong, edit `.claude/skills/plan-
 - Create: `evals/plan-tests/cases/example-1/expected.json`
 - Create: `evals/plan-tests/cases/example-1/output.md` (the conforming agent output)
 
-- [ ] **Step 1: Save the conforming output**
+- [x] **Step 1: Save the conforming output**
 
 Copy the conforming output from `/tmp/plan-tests-actual.md` to `evals/plan-tests/cases/example-1/output.md`. This is the canonical example for eval comparison.
 
-- [ ] **Step 2: Write expected.json (structural assertions)**
+- [x] **Step 2: Write expected.json (structural assertions)**
 
 Create `evals/plan-tests/cases/example-1/expected.json`:
 
@@ -1077,7 +1077,7 @@ Create `evals/plan-tests/cases/example-1/expected.json`:
 }
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add evals/plan-tests/cases/example-1/expected.json evals/plan-tests/cases/example-1/output.md .claude/skills/plan-tests.md

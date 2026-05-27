@@ -1,0 +1,11 @@
+{
+  "skill": "plan-tests",
+  "structural": {
+    "requiredSections": ["## Risk Assessment", "## Coverage Gap", "## Proposed Cases"],
+    "sectionsInOrder": true,
+    "tableColumns": ["ID", "Layer", "Priority", "Description"],
+    "minProposedCases": 3,
+    "allowedLayerValues": ["UI", "API"],
+    "allowedPriorityValues": ["P0", "P1", "P2"]
+  }
+}
