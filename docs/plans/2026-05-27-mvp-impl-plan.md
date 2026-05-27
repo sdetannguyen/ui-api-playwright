@@ -880,7 +880,7 @@ git commit -m "Add HealableLocator class with healable() factory"
 **Files:**
 - Modify: `lib/ui/ReqresHomePage.ts`
 
-- [ ] **Step 1: Edit `lib/ui/ReqresHomePage.ts` to use healable**
+- [x] **Step 1: Edit `lib/ui/ReqresHomePage.ts` to use healable**
 
 Replace the existing content with:
 
@@ -915,12 +915,12 @@ export class ReqresHomePage extends BasePage {
 }
 ```
 
-- [ ] **Step 2: Run existing reqres tests, expect pass**
+- [x] **Step 2: Run existing reqres tests, expect pass**
 
 Run: `npx playwright test tests/ui/reqres-home.spec.ts --project=chromium`
 Expected: PASS (the new `heroHeading` is a HealableLocator but the test only calls methods that exist on it; if the test asserts via `expect(locator)` it may fail — see step 3).
 
-- [ ] **Step 3: Read the spec and adjust if needed**
+- [x] **Step 3: Read the spec and adjust if needed**
 
 Run: `cat tests/ui/reqres-home.spec.ts`
 
@@ -938,12 +938,12 @@ Add to `lib/healing/HealableLocator.ts` inside the class:
 
 Update the spec at any `expect(reqresHome.heroHeading).toBeVisible()` to `expect(reqresHome.heroHeading.primary_locator).toBeVisible()`.
 
-- [ ] **Step 4: Re-run, expect pass**
+- [x] **Step 4: Re-run, expect pass**
 
 Run: `npx playwright test tests/ui/reqres-home.spec.ts --project=chromium`
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add lib/ui/ReqresHomePage.ts lib/healing/HealableLocator.ts tests/ui/reqres-home.spec.ts

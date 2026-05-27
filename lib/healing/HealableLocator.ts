@@ -8,6 +8,10 @@ export class HealableLocator {
     private readonly fallbacks: Locator[],
   ) {}
 
+  get primary_locator(): Locator {
+    return this.primary
+  }
+
   async click(): Promise<void> {
     await this.run((l) => l.click({ timeout: FALLBACK_TIMEOUT_MS }))
   }
