@@ -1355,18 +1355,18 @@ Expected: three HTML files.
 - Modify: `lib/ui/ReqresHomePage.ts` temporarily to simulate breakage (revert after demo)
 - Create: `/tmp/heal-output.json` (transient)
 
-- [ ] **Step 1: Break the primary selector deliberately**
+- [x] **Step 1: Break the primary selector deliberately**
 
 Edit `lib/ui/ReqresHomePage.ts`. In the `signupCallout` HealableLocator, change `page.getByText(/sign up free/i)` to `page.getByText(/this text does not exist on the page/i)`.
 
 Empty out its fallbacks array to force a real failure: `[]`.
 
-- [ ] **Step 2: Run the test, capture the failure + screenshot path**
+- [x] **Step 2: Run the test, capture the failure + screenshot path**
 
 Run: `npx playwright test tests/ui/reqres-home.spec.ts --project=chromium`
 Expected: FAIL. Note the path under `test-results/` containing the screenshot.
 
-- [ ] **Step 3: Invoke heal-test in Claude Code**
+- [x] **Step 3: Invoke heal-test in Claude Code**
 
 In Claude Code:
 
@@ -1376,7 +1376,7 @@ In Claude Code:
 
 Save the JSON output to `/tmp/heal-output.json`.
 
-- [ ] **Step 4: Validate JSON against schema**
+- [x] **Step 4: Validate JSON against schema**
 
 Run:
 
@@ -1396,17 +1396,17 @@ If `ajv` is not installed, install it: `npm install --save-dev ajv`.
 
 Expected: `schema OK`.
 
-- [ ] **Step 5: Apply the patch**
+- [x] **Step 5: Apply the patch**
 
 Run: `npm run apply-patch /tmp/heal-output.json`
 Expected: prints "Applied patch to lib/ui/ReqresHomePage.ts".
 
-- [ ] **Step 6: Re-run the failing test**
+- [x] **Step 6: Re-run the failing test**
 
 Run: `npx playwright test tests/ui/reqres-home.spec.ts --project=chromium`
 Expected: PASS.
 
-- [ ] **Step 7: View the resulting diff and commit if good**
+- [x] **Step 7: View the resulting diff and commit if good**
 
 Run: `git diff lib/ui/ReqresHomePage.ts`
 Expected: shows the fallbacks the agent added.

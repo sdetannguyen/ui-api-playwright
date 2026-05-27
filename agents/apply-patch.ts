@@ -48,7 +48,6 @@ export function applyPatch(patch: PatchDocument): void {
     arrayLit.addElement(fb)
   }
 
-  source.formatText()
   source.saveSync()
 }
 

@@ -25,8 +25,8 @@ export class ReqresHomePage extends BasePage {
       ],
     )
     this.signupCallout = healable(
-      page.getByText(/sign up free/i),
-      [page.locator('a', { hasText: /sign up/i })],
+      page.getByText(/this text does not exist on the page/i),
+      [page.getByRole('link', { name: /create your backend/i }), page.getByText(/free to try\. no card required/i), page.getByRole('link', { name: /get started/i }).first()],
     )
   }
 
