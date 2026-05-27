@@ -158,7 +158,7 @@ Expected: at least 14 lines.
 **Files:**
 - Create: `docs/skills/triage-failures-output-format.md`
 
-- [ ] **Step 1: Create the contract file**
+- [x] **Step 1: Create the contract file**
 
 ```markdown
 # triage-failures output format
@@ -176,7 +176,7 @@ A triage-failures output is one markdown document containing a single markdown t
 The table MUST contain one row per failed test in the input JUnit XML. No other content is required.
 ```
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 Run: `wc -l docs/skills/triage-failures-output-format.md`
 Expected: at least 11 lines.
