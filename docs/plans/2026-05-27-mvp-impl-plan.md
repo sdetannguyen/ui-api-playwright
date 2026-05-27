@@ -66,13 +66,13 @@ Convention deferred to scaffold-test format contract: page objects MUST use `hea
 **Files:**
 - Modify: `package.json`
 
-- [ ] **Step 1: Install runtime + dev dependencies**
+- [x] **Step 1: Install runtime + dev dependencies**
 
 ```bash
 npm install --save-dev ts-morph openai js-yaml @types/js-yaml
 ```
 
-- [ ] **Step 2: Add `agents/` scripts to package.json**
+- [x] **Step 2: Add `agents/` scripts to package.json**
 
 Edit `package.json` and add inside the `scripts` block (after the existing `eslint` line):
 
@@ -83,7 +83,7 @@ Edit `package.json` and add inside the `scripts` block (after the existing `esli
     "eval": "ts-node evals/check.ts",
 ```
 
-- [ ] **Step 3: Verify package.json parses + deps installed**
+- [x] **Step 3: Verify package.json parses + deps installed**
 
 Run: `node -e "JSON.parse(require('fs').readFileSync('package.json'))" && ls node_modules/ts-morph node_modules/openai node_modules/js-yaml`
 Expected: no error from node; three directory listings without errors.
