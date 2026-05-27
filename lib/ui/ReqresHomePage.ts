@@ -5,6 +5,7 @@ import { config } from '../../infrastructure/env.config'
 
 export class ReqresHomePage extends BasePage {
   readonly heroHeading: HealableLocator
+  readonly heroSubheading: HealableLocator
   readonly signupCallout: HealableLocator
 
   constructor(page: Page) {
@@ -14,6 +15,13 @@ export class ReqresHomePage extends BasePage {
       [
         page.getByRole('heading', { name: /backend/i }),
         page.locator('h1').first(),
+      ],
+    )
+    this.heroSubheading = healable(
+      page.getByText(/stable endpoints for QA automation/i),
+      [
+        page.getByText(/persistent data for your apps/i),
+        page.locator('#hero p').first(),
       ],
     )
     this.signupCallout = healable(

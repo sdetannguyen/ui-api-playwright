@@ -1093,13 +1093,13 @@ git commit -m "plan-tests skill: canonical example + expected structural asserti
 **Files:**
 - None modified directly in this task (the agent will write files under `tests/` and `lib/ui/`).
 
-- [ ] **Step 1: In Claude Code, invoke**
+- [x] **Step 1: In Claude Code, invoke**
 
 ```
 /scaffold-test evals/scaffold-test/cases/example-1/input/plan.md T1
 ```
 
-- [ ] **Step 2: Verify generated files**
+- [x] **Step 2: Verify generated files**
 
 The agent should have written a new spec under `tests/ui/` (e.g. `tests/ui/reqres-subheading.spec.ts`). It may have updated `ReqresHomePage` (add a new HealableLocator) or scaffolded a new page object.
 
