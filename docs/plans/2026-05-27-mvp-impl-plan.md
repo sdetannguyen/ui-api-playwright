@@ -93,7 +93,7 @@ Expected: no error from node; three directory listings without errors.
 **Files:**
 - Create: `docs/skills/plan-tests-output-format.md`
 
-- [ ] **Step 1: Create the contract file**
+- [x] **Step 1: Create the contract file**
 
 ```markdown
 # plan-tests output format
@@ -116,7 +116,7 @@ A plan-tests output is a single markdown document. It MUST contain the following
 The document MUST end with three or more proposed cases. Anything beyond these three sections is allowed but not required.
 ```
 
-- [ ] **Step 2: Verify file exists**
+- [x] **Step 2: Verify file exists**
 
 Run: `wc -l docs/skills/plan-tests-output-format.md`
 Expected: at least 13 lines.
