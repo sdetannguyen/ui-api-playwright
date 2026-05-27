@@ -1152,7 +1152,7 @@ git commit -m "scaffold-test skill: canonical example + expected structural asse
 - Create: `agents/apply-patch.ts`
 - Create: `tests/healing/apply-patch.spec.ts` (uses Playwright runner for harness consistency)
 
-- [ ] **Step 1: Write failing test**
+- [x] **Step 1: Write failing test**
 
 Create `tests/healing/apply-patch.spec.ts`:
 
@@ -1215,12 +1215,12 @@ test('applyPatch throws on selectorId not found', () => {
 })
 ```
 
-- [ ] **Step 2: Run, expect fail**
+- [x] **Step 2: Run, expect fail**
 
 Run: `npx playwright test tests/healing/apply-patch.spec.ts --project=chromium`
 Expected: FAIL with "Cannot find module".
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `agents/apply-patch.ts`:
 
@@ -1287,12 +1287,12 @@ if (require.main === module) {
 }
 ```
 
-- [ ] **Step 4: Run, expect pass**
+- [x] **Step 4: Run, expect pass**
 
 Run: `npx playwright test tests/healing/apply-patch.spec.ts --project=chromium`
 Expected: 2 passed.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add agents/apply-patch.ts tests/healing/apply-patch.spec.ts
