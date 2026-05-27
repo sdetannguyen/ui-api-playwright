@@ -237,7 +237,7 @@ Expected: no error.
 **Files:**
 - Create: `.mcp.json`
 
-- [ ] **Step 1: Create config**
+- [x] **Step 1: Create config**
 
 ```json
 {
@@ -254,7 +254,7 @@ Expected: no error.
 }
 ```
 
-- [ ] **Step 2: Verify JSON parses**
+- [x] **Step 2: Verify JSON parses**
 
 Run: `node -e "JSON.parse(require('fs').readFileSync('.mcp.json'))"`
 Expected: no error.
