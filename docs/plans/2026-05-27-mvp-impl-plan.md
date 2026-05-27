@@ -568,7 +568,7 @@ Expected: shows `story.md`, `input.json`, `plan.md`, `junit.xml`.
 
 ### Task 1.12: Day 1 commit
 
-- [ ] **Step 1: Stage and commit**
+- [x] **Step 1: Stage and commit** _(superseded by per-task commits — tasks 1.1 through 1.11 each committed individually)_
 
 ```bash
 git add package.json package-lock.json docs/skills/ agents/skills/ .claude/ .mcp.json evals/
@@ -585,7 +585,7 @@ EOF
 )"
 ```
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 Run: `git log -1 --stat`
 Expected: shows about 11 new files under docs/skills, agents/skills, .claude, .mcp.json, evals.
