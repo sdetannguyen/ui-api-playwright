@@ -186,7 +186,7 @@ Expected: at least 11 lines.
 **Files:**
 - Create: `agents/skills/heal-test/output-schema.json`
 
-- [ ] **Step 1: Create directory and schema file**
+- [x] **Step 1: Create directory and schema file**
 
 ```bash
 mkdir -p agents/skills/heal-test
@@ -227,7 +227,7 @@ Then create `agents/skills/heal-test/output-schema.json`:
 }
 ```
 
-- [ ] **Step 2: Verify JSON parses**
+- [x] **Step 2: Verify JSON parses**
 
 Run: `node -e "JSON.parse(require('fs').readFileSync('agents/skills/heal-test/output-schema.json'))"`
 Expected: no error.
