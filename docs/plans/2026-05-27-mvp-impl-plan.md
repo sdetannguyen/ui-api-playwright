@@ -1306,7 +1306,7 @@ git commit -m "Add apply-patch script for heal-test JSON output"
 - Create: `evals/heal-test/fixtures/reordered-children.html`
 - Create: `evals/heal-test/fixtures/removed-element.html`
 
-- [ ] **Step 1: Create fixtures**
+- [x] **Step 1: Create fixtures**
 
 ```bash
 mkdir -p evals/heal-test/fixtures
@@ -1344,7 +1344,7 @@ mkdir -p evals/heal-test/fixtures
 </body></html>
 ```
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 Run: `ls evals/heal-test/fixtures/`
 Expected: three HTML files.
