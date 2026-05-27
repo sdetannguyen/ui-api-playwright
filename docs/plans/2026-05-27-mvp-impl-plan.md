@@ -1118,7 +1118,7 @@ If the generated spec uses raw `page.locator(...)`, or imports from `@playwright
 **Files:**
 - Create: `evals/scaffold-test/cases/example-1/expected.json`
 
-- [ ] **Step 1: Write expected.json**
+- [x] **Step 1: Write expected.json**
 
 ```json
 {
@@ -1135,7 +1135,7 @@ If the generated spec uses raw `page.locator(...)`, or imports from `@playwright
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add evals/scaffold-test/cases/example-1/expected.json tests/ui/<new-spec> lib/ui/<page-object-changes> .claude/skills/scaffold-test.md

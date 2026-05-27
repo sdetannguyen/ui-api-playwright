@@ -1,0 +1,12 @@
+{
+  "skill": "scaffold-test",
+  "structural": {
+    "specImportsFromFixtures": true,
+    "specHasNoRawLocators": true,
+    "specUsesDestructuredFixture": true,
+    "pageObjectExtendsBasePage": true,
+    "pageObjectUsesHealableFactory": true,
+    "typecheckPasses": true,
+    "eslintPasses": true
+  }
+}
