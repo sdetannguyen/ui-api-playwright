@@ -380,7 +380,7 @@ Expected: prints one match.
 **Files:**
 - Create: `.claude/skills/heal-test.md`
 
-- [ ] **Step 1: Create file**
+- [x] **Step 1: Create file**
 
 ```markdown
 ---
@@ -423,7 +423,7 @@ A single JSON object printed to stdout. Example:
 The output MUST validate against the schema. If you cannot determine a fix, print exactly `{"error": "no_fix_proposed", "reason": "<why>"}` and stop.
 ```
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 Run: `grep "name: heal-test" .claude/skills/heal-test.md`
 Expected: one match.
