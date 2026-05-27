@@ -433,7 +433,7 @@ Expected: one match.
 **Files:**
 - Create: `.claude/skills/triage-failures.md`
 
-- [ ] **Step 1: Create file**
+- [x] **Step 1: Create file**
 
 ```markdown
 ---
@@ -465,7 +465,7 @@ One argument: path to a JUnit XML file.
 Print the markdown table to stdout. Justifications cite the JUnit message in one sentence.
 ```
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 Run: `ls .claude/skills/`
 Expected: shows four `.md` files (plan-tests, scaffold-test, heal-test, triage-failures).
