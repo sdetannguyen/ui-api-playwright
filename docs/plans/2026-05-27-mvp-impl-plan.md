@@ -477,7 +477,7 @@ Expected: shows four `.md` files (plan-tests, scaffold-test, heal-test, triage-f
 - Create: `evals/scaffold-test/cases/example-1/input.json`
 - Create: `evals/triage-failures/cases/example-1/input/junit.xml`
 
-- [ ] **Step 1: Create plan-tests sample story (self-referential)**
+- [x] **Step 1: Create plan-tests sample story (self-referential)**
 
 ```bash
 mkdir -p evals/plan-tests/cases/example-1/input
@@ -500,7 +500,7 @@ Create `evals/plan-tests/cases/example-1/input/story.md`:
 - No data loss during rotation (no rename race).
 ```
 
-- [ ] **Step 2: Create scaffold-test sample input**
+- [x] **Step 2: Create scaffold-test sample input**
 
 ```bash
 mkdir -p evals/scaffold-test/cases/example-1
@@ -536,7 +536,7 @@ Create `evals/scaffold-test/cases/example-1/input/plan.md`:
 | T2 | API | P2 | GET /api/users/2 returns id=2. |
 ```
 
-- [ ] **Step 3: Create triage-failures sample JUnit XML**
+- [x] **Step 3: Create triage-failures sample JUnit XML**
 
 ```bash
 mkdir -p evals/triage-failures/cases/example-1/input
@@ -561,7 +561,7 @@ Create `evals/triage-failures/cases/example-1/input/junit.xml`:
 </testsuites>
 ```
 
-- [ ] **Step 4: Verify all sample files**
+- [x] **Step 4: Verify all sample files**
 
 Run: `ls evals/plan-tests/cases/example-1/input/ evals/scaffold-test/cases/example-1/ evals/scaffold-test/cases/example-1/input/ evals/triage-failures/cases/example-1/input/`
 Expected: shows `story.md`, `input.json`, `plan.md`, `junit.xml`.
