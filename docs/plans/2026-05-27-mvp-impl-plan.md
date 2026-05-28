@@ -1714,7 +1714,7 @@ git commit -m "Add run-cli for plan-tests and triage-failures with OpenAI-compat
 - Create: `evals/check.ts`
 - Modify: `package.json`
 
-- [ ] **Step 1: Create the harness**
+- [x] **Step 1: Create the harness**
 
 `evals/check.ts`:
 
@@ -1828,17 +1828,19 @@ main().catch((e) => {
 })
 ```
 
-- [ ] **Step 2: Verify it compiles**
+- [x] **Step 2: Verify it compiles**
 
 Run: `npx tsc --noEmit evals/check.ts`
 Expected: no errors. (If it errors on strict typing, fix the spots flagged.)
 
-- [ ] **Step 3: Run it**
+Note: repo has no tsconfig.json. Verified via `timeout 30 npx ts-node evals/check.ts` — parsed cleanly, printed JSON array of 4 results all failing with `run-cli error: AI_API_KEY env var required` (expected without API key).
+
+- [ ] **Step 3: Run it** (deferred — needs user's OpenRouter API key)
 
 Run: `AI_API_KEY=<your-openrouter-key> npm run eval`
 Expected: prints a JSON array of 4 results (2 skills × 2 models). Some may fail conformance — that's the point.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add evals/check.ts
