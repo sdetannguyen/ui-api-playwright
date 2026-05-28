@@ -1597,7 +1597,7 @@ git commit -m "Flesh out AI workflows section in README"
 - Create: `agents/run-cli.ts`
 - Modify: `.gitignore`
 
-- [ ] **Step 1: Add `.ai/` ignore patterns**
+- [x] **Step 1: Add `.ai/` ignore patterns**
 
 Append to `.gitignore`:
 
@@ -1606,7 +1606,7 @@ Append to `.gitignore`:
 .ai/runs/
 ```
 
-- [ ] **Step 2: Create the CLI**
+- [x] **Step 2: Create the CLI**
 
 `agents/run-cli.ts`:
 
@@ -1685,7 +1685,7 @@ main().catch((e) => {
 })
 ```
 
-- [ ] **Step 3: Verify it loads and prints help on bad invocation**
+- [x] **Step 3: Verify it loads and prints help on bad invocation**
 
 Run: `npx ts-node agents/run-cli.ts`
 Expected: usage error to stderr, exits non-zero.
@@ -1701,7 +1701,7 @@ npx ts-node agents/run-cli.ts plan-tests evals/plan-tests/cases/example-1/input/
 
 Expected: a markdown plan is printed to stdout.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add agents/run-cli.ts .gitignore
