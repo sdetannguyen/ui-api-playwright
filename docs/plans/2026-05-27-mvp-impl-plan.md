@@ -1508,7 +1508,7 @@ git commit -m "triage-failures skill: canonical example + expected classificatio
 - Create: `evals/results/2026-06-02.md` (date approximate; use the actual date at execution time)
 - Create: `evals/manual-rubric.md`
 
-- [ ] **Step 1: Create manual rubric**
+- [x] **Step 1: Create manual rubric**
 
 ```markdown
 # Manual eval rubric (v0)
@@ -1536,7 +1536,7 @@ When run-cli cannot run a skill (scaffold-test, heal-test), evaluate the Claude 
 - [ ] After applying, the previously failing test passes
 ```
 
-- [ ] **Step 2: Create scorecard template with hand-filled rows**
+- [x] **Step 2: Create scorecard template with hand-filled rows**
 
 Get today's date: `date +%Y-%m-%d`
 
@@ -1559,7 +1559,7 @@ Manual rows scored against `evals/manual-rubric.md`.
 Run-cli rows populated Day 7 by `npm run eval`.
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add evals/manual-rubric.md evals/results/
