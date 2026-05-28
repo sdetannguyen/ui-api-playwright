@@ -1852,11 +1852,11 @@ git commit -m "Add structural eval harness for plan-tests and triage-failures"
 **Files:**
 - Modify: `evals/results/<today>.md`
 
-- [ ] **Step 1: Replace the pending placeholders**
+- [x] **Step 1: Replace the pending placeholders** (partial — run-cli rows marked `blocked` pending AI_API_KEY)
 
 Take the JSON from Task 7.2 step 3. Fill in the corresponding rows in the scorecard. If the JSON shows DeepSeek fails one or more structural checks, write a one-line `Notes` summary (e.g. `missing Coverage Gap section`).
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add evals/results/
