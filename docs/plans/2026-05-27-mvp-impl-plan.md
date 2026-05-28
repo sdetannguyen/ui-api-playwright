@@ -1457,7 +1457,7 @@ git commit -m "Add AI workflows section skeleton to README"
 - Create: `evals/triage-failures/cases/example-1/output.md`
 - Create: `evals/triage-failures/cases/example-1/expected.json`
 
-- [ ] **Step 1: Invoke**
+- [x] **Step 1: Invoke**
 
 In Claude Code:
 
@@ -1465,7 +1465,7 @@ In Claude Code:
 /triage-failures evals/triage-failures/cases/example-1/input/junit.xml
 ```
 
-- [ ] **Step 2: Capture output**
+- [x] **Step 2: Capture output**
 
 Save stdout to `evals/triage-failures/cases/example-1/output.md`. Verify it has three rows, one per failed test. Verify each row has a `Classification` from {flaky, real-bug, env}.
 
@@ -1476,7 +1476,7 @@ Expected reasonable classifications:
 
 If the agent mis-classifies any row, iterate `.claude/skills/triage-failures.md` and re-run.
 
-- [ ] **Step 3: Write expected.json**
+- [x] **Step 3: Write expected.json**
 
 ```json
 {
@@ -1495,7 +1495,7 @@ If the agent mis-classifies any row, iterate `.claude/skills/triage-failures.md`
 }
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add evals/triage-failures/cases/example-1/ .claude/skills/triage-failures.md

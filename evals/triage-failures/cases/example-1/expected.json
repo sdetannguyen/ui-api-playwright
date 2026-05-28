@@ -1,0 +1,14 @@
+{
+  "skill": "triage-failures",
+  "structural": {
+    "hasTable": true,
+    "columns": ["Test", "Classification", "Justification", "Linked Trace"],
+    "rowCount": 3,
+    "allowedClassifications": ["flaky", "real-bug", "env"]
+  },
+  "byRow": {
+    "hero heading is visible": "flaky",
+    "signup button navigates": "real-bug",
+    "API users list loads": "env"
+  }
+}
