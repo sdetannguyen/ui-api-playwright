@@ -4,6 +4,19 @@ A Playwright-based test automation framework for UI and API tests, structured ar
 
 ---
 
+## AI workflows (v0)
+
+This repo ships four agent skills under `.claude/skills/` that reduce repetitive SDET work:
+
+- **plan-tests** — read a story markdown file, output a risk-based test plan
+- **scaffold-test** — turn a plan case into a Playwright spec + page object (extends `BasePage`, uses `healable()`)
+- **heal-test** — inspect a failing run, output a JSON patch upgrading the HealableLocator strategy chain
+- **triage-failures** — classify CI failures from a JUnit XML report
+
+Two invocation modes: interactive in Claude Code (all four skills) and headless via `agents/run-cli.ts` (plan-tests + triage-failures only). See `docs/specs/2026-05-27-mvp-design.md`.
+
+---
+
 ## Framework Design
 
 ### Three-Layer Architecture

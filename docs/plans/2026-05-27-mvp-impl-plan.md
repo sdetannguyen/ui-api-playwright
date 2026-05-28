@@ -1423,7 +1423,7 @@ git commit -m "heal-test live demo cycle: applied agent-proposed fallback for si
 **Files:**
 - Modify: `README.md`
 
-- [ ] **Step 1: Append a new section before "Local Setup"**
+- [x] **Step 1: Append a new section before "Local Setup"**
 
 Append at the top of the README, just under the existing tagline:
 
@@ -1440,7 +1440,7 @@ This repo ships four agent skills under `.claude/skills/` that reduce repetitive
 Two invocation modes: interactive in Claude Code (all four skills) and headless via `agents/run-cli.ts` (plan-tests + triage-failures only). See `docs/specs/2026-05-27-mvp-design.md`.
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add README.md
