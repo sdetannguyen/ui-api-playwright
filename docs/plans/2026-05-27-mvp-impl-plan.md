@@ -1571,16 +1571,16 @@ git commit -m "Add manual eval rubric + scorecard template"
 **Files:**
 - Modify: `README.md`
 
-- [ ] **Step 1: Flesh out the AI workflows section**
+- [x] **Step 1: Flesh out the AI workflows section**
 
 Replace the placeholder section from Day 5 with a richer version. Add a short example for each skill (one line on what you run, one line on what you get).
 
-- [ ] **Step 2: Verify README readable end-to-end**
+- [x] **Step 2: Verify README readable end-to-end**
 
 Run: `wc -l README.md && cat README.md | head -80`
 Expected: file is coherent, no broken links, sections flow.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add README.md
