@@ -45,7 +45,9 @@ Classify CI failures from a JUnit XML report as `flaky`, `real-bug`, or `env`, w
 ```
 → markdown table with one row per failure, ready to paste into a triage doc.
 
-See `docs/specs/2026-05-27-mvp-design.md` for the design rationale, and `evals/results/` for scorecards.
+**Full usage guide:** [`docs/AI_WORKFLOW_GUIDE.md`](docs/AI_WORKFLOW_GUIDE.md) — prerequisites, when-to-use-which-skill flowchart, per-skill reference, common workflows, troubleshooting.
+
+See also `docs/specs/2026-05-27-mvp-design.md` for design rationale and `evals/results/` for scorecards.
 
 ---
 
