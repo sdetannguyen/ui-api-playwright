@@ -65,7 +65,7 @@ async function runCli(skill: string, inputPath: string, model: string): Promise<
 
 async function main() {
   const results: Result[] = []
-  const models = ['anthropic/claude-sonnet-4-6', 'deepseek/deepseek-chat-v3:free']
+  const models = ['anthropic/claude-3-haiku', 'meta-llama/llama-3.3-70b-instruct:free']
   const cases = [
     { skill: 'plan-tests', dir: 'evals/plan-tests/cases/example-1', input: 'evals/plan-tests/cases/example-1/input/story.md', checker: checkPlanTests },
     { skill: 'triage-failures', dir: 'evals/triage-failures/cases/example-1', input: 'evals/triage-failures/cases/example-1/input/junit.xml', checker: checkTriageFailures },

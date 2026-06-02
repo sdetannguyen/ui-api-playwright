@@ -44,13 +44,15 @@ async function main() {
     process.exit(3)
   }
   const baseURL = process.env.AI_BASE_URL ?? 'https://openrouter.ai/api/v1'
-  const model = process.env.AI_MODEL ?? 'deepseek/deepseek-chat-v3:free'
+  const model = process.env.AI_MODEL ?? 'meta-llama/llama-3.3-70b-instruct:free'
+  const maxTokens = Number(process.env.AI_MAX_TOKENS ?? 4000)
 
   const client = new OpenAI({ apiKey, baseURL })
 
   const start = Date.now()
   const response = await client.chat.completions.create({
     model,
+    max_tokens: maxTokens,
     messages: [
       { role: 'system', content: skill.body },
       {
