@@ -10,6 +10,7 @@ interface Result {
   pass: boolean
   failures: string[]
   latencyMs: number
+  rawOutput?: string  // populated for debugging — present when structural checks ran (not on spawn errors)
 }
 
 interface PlanTestsExpected {
@@ -103,6 +104,7 @@ async function main() {
           pass: failures.length === 0,
           failures,
           latencyMs: ms,
+          rawOutput: output,
         })
       } catch (e) {
         const msg = e instanceof Error ? e.message : String(e)
