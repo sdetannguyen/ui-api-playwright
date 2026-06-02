@@ -1,5 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
+import { spawnSync } from 'child_process'
 
 interface Result {
   skill: string
@@ -11,18 +12,36 @@ interface Result {
   latencyMs: number
 }
 
-function checkPlanTests(actual: string, expected: any): string[] {
+interface PlanTestsExpected {
+  structural: {
+    requiredSections: string[]
+    sectionsInOrder: boolean
+    tableColumns: string[]
+    minProposedCases: number
+  }
+}
+
+interface TriageFailuresExpected {
+  structural: {
+    columns: string[]
+    rowCount: number
+    allowedClassifications: string[]
+  }
+  byRow: Record<string, string>
+}
+
+function checkPlanTests(actual: string, expected: PlanTestsExpected): string[] {
   const failures: string[] = []
   for (const section of expected.structural.requiredSections) {
     if (!actual.includes(section)) failures.push(`missing section: ${section}`)
   }
   if (expected.structural.sectionsInOrder) {
-    const idxs = expected.structural.requiredSections.map((s: string) => actual.indexOf(s))
+    const idxs = expected.structural.requiredSections.map((s) => actual.indexOf(s))
     for (let i = 1; i < idxs.length; i++) {
       if (idxs[i] < idxs[i - 1]) failures.push('sections out of order')
     }
   }
-  const cols = expected.structural.tableColumns as string[]
+  const cols = expected.structural.tableColumns
   if (cols.some((c) => !actual.includes(c))) failures.push('table columns missing')
   // Naive case count: number of "| T" occurrences.
   const caseRows = (actual.match(/\n\|\s*T\d+\s*\|/g) || []).length
@@ -32,11 +51,12 @@ function checkPlanTests(actual: string, expected: any): string[] {
   return failures
 }
 
-function checkTriageFailures(actual: string, expected: any): string[] {
+function checkTriageFailures(actual: string, expected: TriageFailuresExpected): string[] {
   const failures: string[] = []
-  const cols = expected.structural.columns as string[]
+  const cols = expected.structural.columns
   if (cols.some((c) => !actual.includes(c))) failures.push('columns missing')
-  const rowCount = (actual.match(/^\|[^|]+\|[^|]+\|[^|]+\|[^|]+\|\s*$/gm) || []).length - 1 // subtract header
+  const matched = actual.match(/^\|[^|]+\|[^|]+\|[^|]+\|[^|]+\|\s*$/gm) || []
+  const rowCount = Math.max(0, matched.length - 1) // subtract header; clamp at 0
   if (rowCount < expected.structural.rowCount) {
     failures.push(`fewer than ${expected.structural.rowCount} rows (got ${rowCount})`)
   }
@@ -49,7 +69,6 @@ function checkTriageFailures(actual: string, expected: any): string[] {
 }
 
 async function runCli(skill: string, inputPath: string, model: string): Promise<{ output: string; ms: number }> {
-  const { spawnSync } = require('child_process')
   const start = Date.now()
   const res = spawnSync('npx', ['ts-node', 'agents/run-cli.ts', skill, inputPath], {
     env: { ...process.env, AI_MODEL: model },
@@ -85,14 +104,15 @@ async function main() {
           failures,
           latencyMs: ms,
         })
-      } catch (e: any) {
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : String(e)
         results.push({
           skill: c.skill,
           mode: 'run-cli',
           model,
           case: 'example-1',
           pass: false,
-          failures: [`run-cli error: ${e.message}`],
+          failures: [`run-cli error: ${msg}`],
           latencyMs: -1,
         })
       }

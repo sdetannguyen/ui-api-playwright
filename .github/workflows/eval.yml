@@ -37,7 +37,12 @@ jobs:
       - name: Run AI eval suite
         env:
           AI_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-        run: npm run eval | tee eval-result.json
+        # Invoke ts-node directly instead of `npm run eval` — npm prefixes
+        # output with "> pkg@x.y.z eval" header lines that break JSON.parse
+        # in the next step. Direct invocation writes only the JSON array.
+        run: |
+          npx ts-node evals/check.ts > eval-result.json
+          cat eval-result.json  # also surface in the build log for visibility
 
       - name: Upload scorecard JSON
         if: always()
