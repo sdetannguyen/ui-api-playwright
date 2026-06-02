@@ -4,6 +4,53 @@ A Playwright-based test automation framework for UI and API tests, structured ar
 
 ---
 
+## AI workflows (v0)
+
+This repo ships four agent skills under `.claude/skills/` that reduce repetitive SDET work. Two invocation modes: interactive in Claude Code (all four skills) and headless via `agents/run-cli.ts` (plan-tests + triage-failures only).
+
+### plan-tests
+
+Read a story markdown file, output a risk-based test plan as a markdown table (risks, coverage gaps, proposed cases with ID/Layer/Priority/Description).
+
+```
+/plan-tests stories/login.md
+```
+→ writes `evals/plan-tests/<story>/output.md` with proposed cases ready for `scaffold-test`.
+
+### scaffold-test
+
+Turn one proposed case into a Playwright spec + (if needed) a page object. Spec imports from `lib/fixtures` only, uses destructured fixtures, zero raw locators. Page objects extend `BasePage` and use `healable(primary, [fallbacks])`.
+
+```
+/scaffold-test evals/plan-tests/login/output.md T1
+```
+→ writes `tests/<layer>/<slug>.spec.ts` and optionally `lib/ui/<Name>Page.ts`.
+
+### heal-test
+
+Inspect a failing run, emit a JSON patch upgrading the HealableLocator strategy chain — only adds fallbacks; never edits the primary or test code.
+
+```
+/heal-test "signup callout is visible" test-results/<dir>/test-failed-1.png > /tmp/heal-output.json
+npm run apply-patch /tmp/heal-output.json
+```
+→ ts-morph applies the patch to `lib/ui/<Name>Page.ts`. Re-run the test; the fallback chain rescues the broken primary.
+
+### triage-failures
+
+Classify CI failures from a JUnit XML report as `flaky`, `real-bug`, or `env`, with a justification per row.
+
+```
+/triage-failures evals/triage-failures/cases/example-1/input/junit.xml
+```
+→ markdown table with one row per failure, ready to paste into a triage doc.
+
+**Full usage guide:** [`docs/AI_WORKFLOW_GUIDE.md`](docs/AI_WORKFLOW_GUIDE.md) — prerequisites, when-to-use-which-skill flowchart, per-skill reference, common workflows, troubleshooting.
+
+See also `docs/specs/2026-05-27-mvp-design.md` for design rationale and `evals/results/` for scorecards.
+
+---
+
 ## Framework Design
 
 ### Three-Layer Architecture

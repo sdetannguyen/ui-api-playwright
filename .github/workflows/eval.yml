@@ -1,0 +1,87 @@
+name: AI Eval Suite
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:  # allows manual "Run workflow" from GitHub UI
+
+# Don't run multiple evals against the same PR concurrently — newer push cancels older.
+concurrency:
+  group: eval-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+# Eval is read-only — no need for write tokens.
+permissions:
+  contents: read
+
+jobs:
+  eval:
+    name: Structural eval (plan-tests + triage-failures)
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+
+    # Skip on fork PRs — secrets aren't available there anyway, and we don't want
+    # silent failures cluttering review. Local + same-repo PRs still run.
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install -g yarn && yarn
+
+      - name: Run AI eval suite
+        env:
+          AI_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        # Invoke ts-node directly instead of `npm run eval` — npm prefixes
+        # output with "> pkg@x.y.z eval" header lines that break JSON.parse
+        # in the next step. Direct invocation writes only the JSON array.
+        run: |
+          npx ts-node evals/check.ts > eval-result.json
+          cat eval-result.json  # also surface in the build log for visibility
+
+      - name: Upload scorecard JSON
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-scorecard
+          path: eval-result.json
+          retention-days: 30
+
+      - name: Surface raw output for failed runs (debug)
+        if: always()
+        run: |
+          node -e "
+            const r = JSON.parse(require('fs').readFileSync('eval-result.json', 'utf8'));
+            const failed = r.filter(x => !x.pass);
+            if (failed.length === 0) { console.log('No failed runs to debug.'); process.exit(0); }
+            for (const f of failed) {
+              console.log('::group::FAILED ' + f.skill + ' + ' + f.model);
+              console.log('Failures: ' + JSON.stringify(f.failures, null, 2));
+              if (f.rawOutput) {
+                console.log('--- raw model output (first 2000 chars) ---');
+                console.log(f.rawOutput.slice(0, 2000));
+                if (f.rawOutput.length > 2000) console.log('... (' + (f.rawOutput.length - 2000) + ' more chars truncated; full output in artifact)');
+              } else {
+                console.log('(no rawOutput — failed before structural check, see failures above)');
+              }
+              console.log('::endgroup::');
+            }
+          "
+
+      - name: Fail job if any structural check failed
+        run: |
+          fails=$(node -e "
+            const r = JSON.parse(require('fs').readFileSync('eval-result.json', 'utf8'));
+            const hard = r.filter(x => !x.pass && !x.failures.some(f => /run-cli error.*(429|503|502)/.test(f)));
+            console.log(hard.length);
+          ")
+          if [ "$fails" -gt 0 ]; then
+            echo "::error::$fails skill(s) failed structural checks. See 'Surface raw output' step above + the eval-scorecard artifact for full output."
+            exit 1
+          fi
+          echo "All structural checks passed."

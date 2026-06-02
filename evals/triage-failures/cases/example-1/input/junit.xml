@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="reqres-home" tests="3" failures="2" errors="1">
+    <testcase classname="reqres-home" name="hero heading is visible" time="32.1">
+      <failure message="locator.click: Timeout 30000ms exceeded.&#xA;Call log:&#xA;  - waiting for getByRole('heading', name: /A real backend/i)">strict mode violation: getByRole('heading')</failure>
+    </testcase>
+    <testcase classname="reqres-home" name="signup button navigates" time="1.2">
+      <failure message="expect(received).toBe(expected)&#xA;Expected: 'Sign up'&#xA;Received: 'Register'">Assertion failed at reqres-home.spec.ts:14</failure>
+    </testcase>
+    <testcase classname="reqres-home" name="API users list loads" time="0.3">
+      <error message="connect ECONNREFUSED 127.0.0.1:443">FetchError: connect ECONNREFUSED</error>
+    </testcase>
+  </testsuite>
+</testsuites>
