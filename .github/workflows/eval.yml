@@ -1,0 +1,61 @@
+name: AI Eval Suite
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:  # allows manual "Run workflow" from GitHub UI
+
+# Don't run multiple evals against the same PR concurrently — newer push cancels older.
+concurrency:
+  group: eval-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+# Eval is read-only — no need for write tokens.
+permissions:
+  contents: read
+
+jobs:
+  eval:
+    name: Structural eval (plan-tests + triage-failures)
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+
+    # Skip on fork PRs — secrets aren't available there anyway, and we don't want
+    # silent failures cluttering review. Local + same-repo PRs still run.
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install -g yarn && yarn
+
+      - name: Run AI eval suite
+        env:
+          AI_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: npm run eval | tee eval-result.json
+
+      - name: Upload scorecard JSON
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-scorecard
+          path: eval-result.json
+          retention-days: 30
+
+      - name: Fail job if any structural check failed
+        run: |
+          fails=$(node -e "
+            const r = JSON.parse(require('fs').readFileSync('eval-result.json', 'utf8'));
+            const hard = r.filter(x => !x.pass && !x.failures.some(f => /run-cli error.*(429|503|502)/.test(f)));
+            console.log(hard.length);
+          ")
+          if [ "$fails" -gt 0 ]; then
+            echo "::error::$fails skill(s) failed structural checks. Inspect the eval-scorecard artifact."
+            exit 1
+          fi
+          echo "All structural checks passed."
